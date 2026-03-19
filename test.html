@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Multi-Interaction</title>
+
+    <style>
+        /* =========================================
+           1. 基础样式与作品集列表
+           ========================================= */
+        body {
+            background-color: #eef2e3; 
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 150px 50px 500px 50px; 
+            color: #333;
+            overflow-x: hidden; 
+        }
+
+        .collection-list { max-width: 1000px; margin: 0 auto; }
+
+        .collection-item {
+            display: flex; justify-content: flex-start; padding: 90px 0;
+            border-bottom: 1.5px solid #c9d4b6; cursor: pointer; position: relative;
+        }
+
+        .year { width: 20%; font-size: 1rem; color: #666; position: relative; z-index: 999; }
+        .content { width: 60%; position: relative; z-index: 999; }
+        .title { font-size: 2.2rem; margin: 0 0 15px 0; font-weight: normal; }
+        .description { line-height: 1.6; color: #555; font-size: 1.1rem; margin: 0; padding-right: 40px; }
+        .arrow { width: 20%; text-align: right; font-size: 1.5rem; color: #999; transition: transform 0.3s ease; position: relative; z-index: 999; }
+
+        .collection-item:hover .arrow { transform: translateX(15px); color: #333; }
+
+        /* 列表悬浮预览图 */
+        .hover-image {
+            position: fixed; top: 0; left: 0; width: auto; height: auto;
+            max-width: 320px; max-height: 250px; z-index: -1; pointer-events: none; 
+            transform: translate(-50%, -50%); opacity: 0; visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.5s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .scroll-reveal {
+            opacity: 0; transform: translateY(100px); 
+            transition: opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* =========================================
+           2. 弹窗通用样式
+           ========================================= */
+        .book-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 9999; 
+            background-color: rgba(238, 242, 227, 0.96); 
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+        }
+        .book-overlay.is-active { opacity: 1; pointer-events: auto; }
+
+        .modern-close-btn {
+            position: fixed; top: 40px; right: 40px; width: 50px; height: 50px;
+            border-radius: 50%; background: #fff; color: #333;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, background 0.3s ease; z-index: 10000;
+        }
+        .modern-close-btn:hover { transform: scale(1.1) rotate(90deg); }
+
+        /* 作品通用样式 */
+        .photo-item {
+            position: absolute; width: 180px; 
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.2));
+            cursor: pointer; opacity: 0; transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .photo-item img { width: 100%; height: auto; display: block; }
+        .photo-item:hover { transform: scale(1.1) rotate(0deg) !important; z-index: 50; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3)); }
+
+        .photo-info {
+            position: absolute; bottom: -70px; left: -10%; width: 120%; 
+            text-align: center; color: #333; opacity: 0; transition: opacity 0.3s;
+            pointer-events: none; text-shadow: 0 0 10px #fff; line-height: 1.4;
+        }
+        .photo-info .title { display: block; font-size: 1.05rem; font-weight: bold; margin-bottom: 2px; }
+        .photo-info .meta { display: block; font-size: 0.85rem; color: #444; }
+        .photo-item:hover .photo-info { opacity: 1; }
+
+        /* --- 板块 2 专属：黑色蒙层样式 --- */
+        .game-container .photo-info {
+            /* 覆盖掉原来的定位和位移 */
+            top: 0; left: 0; bottom: auto;
+            width: 100%; height: 100%;
+            
+            /* 黑色蒙层背景 */
+            background-color: rgba(0, 0, 0, 0.7); 
+            
+            /* 居中排版 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            
+            color: #fff;
+            text-shadow: none; /* 去掉原来的白色发光 */
+            padding: 15px;
+            box-sizing: border-box;
+            border-radius: 4px; /* 如果图片有圆角可以加上 */
+        }
+
+        /* 板块 2 的文字细节微调 */
+        .game-container .photo-info .title {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .game-container .photo-info .meta {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* =========================================
+           3. 【板块 01】书本容器 & 坐标
+           ========================================= */
+        .book-container {
+            position: relative; width: 70vw; max-width: 900px; aspect-ratio: 4 / 3; 
+            background: url('./01/book.png') no-repeat center / contain;
+            transform: scale(0.9) translateY(30px); transition: transform 0.6s ease;
+        }
+        .book-overlay.is-active .book-container { transform: scale(1) translateY(0); }
+
+        .b-1 { top: 15%; left: 10%; transform: rotate(-5deg); }
+        .b-2 { top: 35%; right: 12%; transform: rotate(8deg); }
+        .b-3 { top: 55%; left: 25%; transform: rotate(3deg); }
+
+        .book-overlay.is-active .b-1 { opacity: 1; transition-delay: 0.1s; }
+        .book-overlay.is-active .b-2 { opacity: 1; transition-delay: 0.2s; }
+        .book-overlay.is-active .b-3 { opacity: 1; transition-delay: 0.3s; }
+
+        /* =========================================
+           4. 【板块 02】PSP 容器 & 5个作品坐标
+           ========================================= */
+        .game-container {
+            position: relative; width: 80vw; max-width: 1180px; aspect-ratio: 16 / 9; 
+            background: url('./02/Bpsp.png') no-repeat center / contain; /* 替换成你的游戏机图 */
+            transform: scale(0.9) translateY(30px); transition: transform 0.6s ease;
+        }
+        .book-overlay.is-active .game-container { transform: scale(1) translateY(0); }
+
+        /* PSP 风格：5个作品分布在屏幕四周 */
+        .g-1 { top: 17%;  left: 22%;   transform: rotate(-5deg); }
+        .g-2 { top: 18%; left: 44%;  transform: rotate(-2deg); }
+        .g-3 { top: 17%; right: 20%;  transform: rotate(5deg); }
+        .g-4 { bottom: 24%; left: 30%; transform: rotate(3deg); }
+        .g-5 { bottom: 23%; right: 30%; transform: rotate(-3deg); }
+
+        .book-overlay.is-active .g-1 { opacity: 1; transition-delay: 0.1s; }
+        .book-overlay.is-active .g-2 { opacity: 1; transition-delay: 0.2s; }
+        .book-overlay.is-active .g-3 { opacity: 1; transition-delay: 0.3s; }
+        .book-overlay.is-active .g-4 { opacity: 1; transition-delay: 0.4s; }
+        .book-overlay.is-active .g-5 { opacity: 1; transition-delay: 0.5s; }
+
+    </style>
+</head>
+
+<body>
+    <div class="collection-list">
+        <div class="collection-item scroll-reveal" onclick="openModal('book-modal')">
+            <div class="year">01 / <br>Figma <br>AdobeInDesign </div>
+            <div class="content">
+                <h2 class="title">Graphic & Visual Design </h2>
+                <p class="description">A series of three interactive web games...</p>
+            </div>
+            <div class="arrow">→</div>
+            <img src="./images/art7.png" class="hover-image" alt="Menu">
+        </div>
+
+        <div class="collection-item scroll-reveal" onclick="openModal('game-modal')">
+            <div class="year">02 / <br>Twine <br>Arduino <br>TD</div>
+            <div class="content">
+                <h2 class="title">Interactive Installation</h2>
+                <p class="description">Bridging the physical and digital. Click to explore our console-style archive.</p>
+            </div>
+            <div class="arrow">→</div>
+            <img src="./images/art23.png" class="hover-image" alt="TD">
+        </div>
+
+        <div class="collection-item scroll-reveal"><div class="year">03 / ...</div><div class="content"><h2 class="title">Creative Coding</h2><p class="description">...</p></div><div class="arrow">→</div></div>
+        <div class="collection-item scroll-reveal"><div class="year">04 / ...</div><div class="content"><h2 class="title">Video & 3D</h2><p class="description">...</p></div><div class="arrow">→</div></div>
+        <div class="collection-item scroll-reveal"><div class="year">05 / ...</div><div class="content"><h2 class="title">Art Work</h2><p class="description">...</p></div><div class="arrow">→</div></div>
+    </div>
+
+    <div class="book-overlay" id="book-modal">
+        <div class="modern-close-btn" onclick="closeAllModals()">✕</div>
+        <div class="book-container">
+            <div class="photo-item b-1"><img src="./01/art7_副本.png"><div class="photo-info"><span class="title">UMAMI</span><span class="meta">Menu Design(Adobe InDesign)</span><span class="meta">A3 | 2024</span></div></div>
+            <div class="photo-item b-2"><img src="./01/art17.jpg"><div class="photo-info"><span class="title">DIGITAL UMAMI</span><span class="meta">Menu Design(Figma)</span><span class="meta">2024</span></div></div>
+            <div class="photo-item b-3"><img src="./01/art11.png"><div class="photo-info"><span class="title">UPKP</span><span class="meta">Logo Design(Adobe InDesign)</span><span class="meta">3.5 x 2 in｜2024</span></div></div>
+        </div>
+    </div>
+
+    <div class="book-overlay" id="game-modal">
+        <div class="modern-close-btn" onclick="closeAllModals()">✕</div>
+        <div class="game-container">
+            <div class="photo-item g-1"><img src="./02/art16.jpg"><div class="photo-info"><span class="title">GAME 01</span><span class="meta">Unity | 2024</span></div></div>
+            <div class="photo-item g-2"><img src="./02/art22.jpg"><div class="photo-info"><span class="title">GAME 02</span><span class="meta">Twine | 2024</span></div></div>
+            <div class="photo-item g-3"><img src="./02/art9.jpg"><div class="photo-info"><span class="title">INSTALLATION</span><span class="meta">Arduino</span></div></div>
+            <div class="photo-item g-4"><img src="./02/art20.png"><div class="photo-info"><span class="title">PROTOTYPE</span><span class="meta">Figma</span></div></div>
+            <div class="photo-item g-5"><img src="./02/psp.png"><div class="photo-info"><span class="title">INTERACTIVE</span><span class="meta">TD | 2024</span></div></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 列表图片跟随 (保持原样)
+        const items = document.querySelectorAll('.collection-item');
+        items.forEach(item => {
+            const img = item.querySelector('.hover-image');
+            if(img) {
+                document.body.appendChild(img);
+                item.addEventListener('mouseenter', () => img.style.visibility = 'visible');
+                item.addEventListener('mouseleave', () => { img.style.opacity = '0'; img.style.visibility = 'hidden'; });
+                item.addEventListener('mousemove', (e) => {
+                    img.style.left = e.clientX + 'px'; img.style.top = e.clientY + 'px';
+                    const rect = item.getBoundingClientRect();
+                    const minDist = Math.min(e.clientY - rect.top, rect.bottom - e.clientY, e.clientX - rect.left, rect.right - e.clientX);
+                    if (minDist <= 60) { img.style.opacity = '0'; img.style.visibility = 'hidden'; } 
+                    else { img.style.opacity = '1'; img.style.visibility = 'visible'; }
+                });
+            }
+        });
+
+        // 2. 滚动观察 (保持原样)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        // 3. 弹窗控制逻辑 (升级版)
+        function openModal(id) {
+            document.getElementById(id).classList.add('is-active');
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        }
+
+        function closeAllModals() {
+            document.querySelectorAll('.book-overlay').forEach(modal => modal.classList.remove('is-active'));
+            document.body.style.overflow = 'auto';
+        }
+
+        // 点击背景关闭
+        document.querySelectorAll('.book-overlay').forEach(modal => {
+            modal.addEventListener('click', (e) => { if(e.target === modal) closeAllModals(); });
+        });
+
+        // ESC 键关闭
+        document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeAllModals(); });
+    </script>
+</body>
+</html>
