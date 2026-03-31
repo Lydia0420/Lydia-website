@@ -3,26 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Smooth Scroll & Book Interaction</title>
+    <title>Lydia's Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
+        
     /* =========================================
-        1. 基础样式与作品集列表 (原有)
+        0. 页面基础与过渡样式
     ========================================= */
         body {
-            background-color: #eef2e3; 
+            /* 初始背景为纯白，适配序列帧 */
+            background-color: #ffffff; 
             font-family: 'Helvetica Neue', Arial, sans-serif;
             margin: 0;
-            padding: 150px 50px 500px 50px; 
             color: #333;
             overflow-x: hidden; 
         }
 
-        .collection-list { max-width: 1000px; margin: 0 auto; }
+        /* 隐藏滚动条让视觉更纯粹（可选，按需开启） */
+        /* body::-webkit-scrollbar { display: none; } */
+
+        /* 加载提示文字 */
+        #loading {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: sans-serif;
+            font-size: 20px;
+            color: #333;
+            z-index: 9999;
+        }
+
+     /* =========================================
+        0.5 导航栏 (Nav Bar)
+    ========================================= */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 30px;
+            box-sizing: border-box;
+            z-index: 9000; /* 确保在画布之上，但在全屏弹窗之下 */
+            transition: background 0.4s ease, padding 0.4s ease, backdrop-filter 0.4s ease;
+        }
+
+        /* 向下滚动后，导航栏变窄并增加毛玻璃效果 */
+        .navbar.scrolled {
+            padding: 20px 30px;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            cursor: pointer;
+            color: #111;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-item {
+        font-size: 1rem;
+        color: #555;
+        text-decoration: none;
+        cursor: pointer;
+        display: inline-block;
+        transform: translateY(0);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: #000;
+            transform: translateY(-3px); /* 向上微浮 3px */
+        }
+
+        .nav-item:hover::after {
+            width: 100%;
+        }
+
+        /* 鼠标进入整个导航区域时，未被悬浮的项变透明后退 */
+        .nav-links:hover .nav-item:not(:hover) {
+            opacity: 0.5;
+        }
+
+     /* =========================================
+        1. 序章：序列帧画布样式
+    ========================================= */
+        .scroll-container {
+            height: 400vh; /* 滚动轨道，决定动画播放的滚动长度 */
+        }
+
+        .sticky-box {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+
+        }
+
+    /* =========================================
+        1.5 过渡区：个人宣言与简介
+    ========================================= */
+        .intro-section {
+            min-height: 80vh; /* 占据屏幕大部分高度，给足呼吸感 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .intro-slogan {
+            font-size: 4rem;
+            font-weight: 500;
+            line-height: 1.1;
+            margin: 0 0 24px 0;
+            letter-spacing: -1px;
+            color: #111;
+        }
+
+        .intro-desc {
+            font-size: 1.25rem;
+            color: #666;
+            max-width: 600px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+
+    /* =========================================
+        2. 正文：作品集列表样式
+    ========================================= */
+        .portfolio-section {
+            padding: 50px 50px 500px 50px; 
+            position: relative;
+            z-index: 10;
+        }
+
+        .collection-list { max-width: 980px; margin: 0 auto; }
 
         .collection-item {
             display: flex; justify-content: flex-start; padding: 90px 0;
-            border-bottom: 1.5px solid #c9d4b6; cursor: pointer; position: relative;
+            border-bottom: 1.5px solid #b6bfd4; cursor: pointer; position: relative;
         }
 
         .year { width: 20%; font-size: 1rem; color: #666; position: relative; z-index: 999; }
@@ -42,21 +185,30 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
+        /* --- 列表悬浮图片 --- */
+        .hover-image {
+            position: fixed; top: 0; left: 0; width: auto; height: auto;
+            max-width: 320px; max-height: 250px; z-index: -1; pointer-events: none; 
+            transform: translate(-50%, -50%); opacity: 0; visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.5s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
         /* --- 列表滚动动画 --- */
         .scroll-reveal {
-            opacity: 0; transform: translateY(100px); 
+            opacity: 0; transform: translateY(90px); 
             transition: opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1), transform 1s cubic-bezier(0.215, 0.61, 0.355, 1);
         }
         .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 
     /* =========================================
-       2. 弹窗通用样式
+       3. 弹窗通用样式
     ========================================= */
         .book-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 9999; 
-            background-color: rgba(238, 242, 227, 0.96); 
+            background-color: rgba(227, 236, 242, 0.96); 
             display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
         }
@@ -71,7 +223,7 @@
         }
         .modern-close-btn:hover { transform: scale(1.1) rotate(90deg); }
 
-        /* 作品通用样式 （板块1） */
+        /* 作品通用样式 （板块1 & 板块3） */
         .photo-item {
             position: absolute; width: 200px; 
             filter: drop-shadow(0 8px 15px rgba(0,0,0,0.2));
@@ -123,7 +275,7 @@
 
 
     /* =========================================
-       3. 【板块 01】书本容器 & 坐标
+       4. 【板块 01】书本容器 & 坐标
    ========================================= */
         .book-container {
             position: relative; width: 75vw; max-width: 950px; aspect-ratio: 4 / 3; 
@@ -141,7 +293,7 @@
         .book-overlay.is-active .b-3 { opacity: 1; transition-delay: 0.3s; }
 
     /* =========================================
-       4. 【板块 02】PSP 容器 & 5个作品坐标
+       5. 【板块 02】PSP 容器 & 5个作品坐标
     ========================================= */
         .game-container {
             position: relative; width: 80vw; max-width: 1180px; aspect-ratio: 16 / 9; 
@@ -150,7 +302,6 @@
         }
         .book-overlay.is-active .game-container { transform: scale(1) translateY(0); }
 
-        /* PSP 风格：5个作品分布在屏幕四周 */
         .g-1 { top: 17%;  left: 22%;   transform: rotate(-5deg); }
         .g-2 { top: 18%; left: 44%;  transform: rotate(-2deg); }
         .g-3 { top: 17%; right: 20%;  transform: rotate(5deg); }
@@ -165,7 +316,7 @@
 
 
     /* =========================================
-        5. 【板块 03】iMac 容器 & 5个作品坐标
+        6. 【板块 03】iMac 容器 & 5个作品坐标
         ========================================= */
         .imac-container {
             position: relative; width: 80vw; max-width: 850px; aspect-ratio: 1.2 / 1; /* iMac 比较方正 */
@@ -174,14 +325,12 @@
         }
         .book-overlay.is-active .imac-container { transform: scale(1) translateY(0); }
 
-        /* iMac 风格作品坐标 (文字使用板块1风格) */
         .m-1 { top: 10%; left: 10%; transform: rotate(-5deg); }
         .m-2 { top: 10%; right: 9%; transform: rotate(3deg); }
         .m-3 { bottom: 40%; right: 9%; transform: rotate(-3deg); }
         .m-4 { bottom: 37%; left: 12%; transform: rotate(4deg); }
         .m-5 { bottom: 45%; left: 40%; transform: rotate(-2deg); }
 
-        /* 依次掉落动画 */
         .book-overlay.is-active .m-1 { opacity: 1; transition-delay: 0.1s; }
         .book-overlay.is-active .m-2 { opacity: 1; transition-delay: 0.1s; }
         .book-overlay.is-active .m-3 { opacity: 1; transition-delay: 0.2s; }
@@ -199,7 +348,6 @@
         }
         .book-overlay.is-active .tv-container { transform: scale(1) translateY(0); }
 
-        /* 让电视板块也使用黑色蒙层效果 */
         .tv-container .photo-item { width: 190px; }
         .tv-container .photo-info {
             top: 0; left: 0; bottom: auto;
@@ -212,91 +360,117 @@
         .tv-container .photo-info .title { color: #fff; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
         .tv-container .photo-info .meta { color: rgba(255, 255, 255, 0.8); font-size: 0.8rem; }
 
-        /* 4 个作品坐标：像从电视天线或屏幕里飞出来 */
         .t-1 { top: 32%; left: 26%; transform: rotate(5deg); }
         .t-2 { top: 31%; right: 37%; transform: rotate(-5deg); }
         .t-3 { bottom: 22%; left: 24%; transform: rotate(-3deg); }
         .t-4 { bottom: 25%; right: 37%; transform: rotate(3deg); }
 
-        /* 掉落延迟 */
         .book-overlay.is-active .t-1 { opacity: 1; transition-delay: 0.1s; }
         .book-overlay.is-active .t-2 { opacity: 1; transition-delay: 0.2s; }
         .book-overlay.is-active .t-3 { opacity: 1; transition-delay: 0.3s; }
         .book-overlay.is-active .t-4 { opacity: 1; transition-delay: 0.4s; }
-        </style>
+    </style>
 </head>
 
+
+
 <body>
-    <div class="collection-list">
-        <div class="collection-item scroll-reveal" onclick="openModal('book-modal')">
-            <div class="year">01 / <br>Figma <br>AdobeInDesign </div>
-            <div class="content">
-            <h2 class="title">Graphic & Visual Design </h2>
-            <p class="description">A series of three interactive web games exploring generative art, physics simulation, and playful user inputs.</p>
+    <nav class="navbar" id="navbar">
+        <a class="nav-logo" onclick="scrollToTop()">Lydia's Portfolio</a>
+        <div class="nav-links">
+            <a class="nav-item" onclick="scrollToSection('work-section')">Work</a>
+            <a class="nav-item" href="details/about.html">About</a>
+            <a class="nav-item" href="details/contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div id="loading">正在加载序列帧: 0%</div>
+
+    <div class="scroll-container">
+        <div class="sticky-box">
+            <canvas id="hand-canvas"></canvas>
+        </div>
+    </div>
+
+    <div class="intro-section scroll-reveal" id="about-section">
+        <h1 class="intro-slogan">Bridging the Physical<br>and Digital.</h1>
+        <p class="intro-desc">
+            A multidisciplinary designer & creative coder.<br>
+            I craft interactive experiences through digital media, physical computing, and visual design.
+        </p>
+    </div>
+
+    <div class="portfolio-section" id="work-section">
+        <div class="collection-list">
+            <div class="collection-item scroll-reveal" onclick="openModal('book-modal')">
+                <div class="year">01 / <br>Figma <br>AdobeInDesign </div>
+                <div class="content">
+                <h2 class="title">Graphic & Visual Design </h2>
+                <p class="description">A series of three interactive web games exploring generative art, physics simulation, and playful user inputs.</p>
+                </div>
+                <div class="arrow">→</div>
+                <img src="./images/art7.png" class="hover-image" alt="Menu & Logo">
             </div>
-            <div class="arrow">→</div>
-            <img src="./images/art7.png" class="hover-image" alt="Menu & Logo">
-        </div>
 
-        <div class="collection-item scroll-reveal" onclick="openModal('game-modal')">
-            <div class="year">02 / <br>p5.js <br>html+css</div>
-            <div class="content">
-            <h2 class="title">Creative Coding & Game Design</h2>
-            <p class="description">Bridging the physical and digital. An interactive installation that reacts to human proximity and environmental light.</p>            </div>
-            <div class="arrow">→</div>
-            <img src="./images/art16.jpg" class="hover-image" alt="p5js Game">
-        </div>
-
-        <div class="collection-item scroll-reveal" onclick="openModal('imac-modal')">
-            <div class="year">03 / <br>Twine <br>Arduino <br>TouchDesigner</div>
-            <div class="content">
-            <h2 class="title">Interactive Installation & New Media</h2>
-            <p class="description">From digital to print. A cohesive branding experience featuring a dynamic Figma digital menu and a tactile InDesign print layout.</p>
+            <div class="collection-item scroll-reveal" onclick="openModal('game-modal')">
+                <div class="year">02 / <br>p5.js <br>html+css</div>
+                <div class="content">
+                <h2 class="title">Creative Coding & Game Design</h2>
+                <p class="description">Bridging the physical and digital. An interactive installation that reacts to human proximity and environmental light.</p>            </div>
+                <div class="arrow">→</div>
+                <img src="./images/art16.jpg" class="hover-image" alt="p5js Game">
             </div>
-            <div class="arrow">→</div>
-            <img src="./images/art23.png" class="hover-image" alt="TD Work">
-        </div>
 
-        <div class="collection-item scroll-reveal" onclick="openModal('tv-modal')">
-            <div class="year">04 / <br>Adobe PremierPro <br>Stop Motion <br>Blender </div>
-            <div class="content">
-            <h2 class="title">Video & 3D Modeling</h2>
-            <p class="description">Three generative audio-reactive projects mapping sound frequencies to real-time particle systems and geometries.</p>
+            <div class="collection-item scroll-reveal" onclick="openModal('imac-modal')">
+                <div class="year">03 / <br>Twine <br>Arduino <br>TouchDesigner</div>
+                <div class="content">
+                <h2 class="title">Interactive Installation & New Media</h2>
+                <p class="description">From digital to print. A cohesive branding experience featuring a dynamic Figma digital menu and a tactile InDesign print layout.</p>
+                </div>
+                <div class="arrow">→</div>
+                <img src="./images/art23.png" class="hover-image" alt="TD Work">
             </div>
-            <div class="arrow">→</div>
-            <img src="./images/art19.jpg" class="hover-image" alt="movie">
-        </div>
 
-        <div class="collection-item scroll-reveal" onclick="openModal('game-modal')">
-            <div class="year">05 / Art Work</div>
-            <div class="content">
-            <h2 class="title">Art Work</h2>
-            <p class="description">Crafting virtual worlds and physical narratives. A hybrid exploration of 3D modeling and traditional frame-by-frame animation.</p>
+            <div class="collection-item scroll-reveal" onclick="openModal('tv-modal')">
+                <div class="year">04 / <br>Adobe PremierPro <br>Stop Motion <br>Blender </div>
+                <div class="content">
+                <h2 class="title">Video & 3D Modeling</h2>
+                <p class="description">Three generative audio-reactive projects mapping sound frequencies to real-time particle systems and geometries.</p>
+                </div>
+                <div class="arrow">→</div>
+                <img src="./images/art19.jpg" class="hover-image" alt="movie">
             </div>
-            <div class="arrow">→</div>
-            <img src="https://picsum.photos/seed/p5/600/800" class="hover-image" alt="Placeholder 5">
-        </div>
 
+            <div class="collection-item scroll-reveal" onclick="openModal('game-modal')">
+                <div class="year">05 / Art Work</div>
+                <div class="content">
+                <h2 class="title">Art Work</h2>
+                <p class="description">Crafting virtual worlds and physical narratives. A hybrid exploration of 3D modeling and traditional frame-by-frame animation.</p>
+                </div>
+                <div class="arrow">→</div>
+                <img src="https://picsum.photos/seed/p5/600/800" class="hover-image" alt="Placeholder 5">
+            </div>
+        </div>
     </div>
 
 
     <div class="book-overlay" id="book-modal">
         <div class="modern-close-btn" onclick="closeAllModals()">✕</div>
         <div class="book-container">
-            <div class="photo-item b-1"><img src="./01/art7_副本.png"><div class="photo-info"><span class="title">UMAMI</span><span class="meta">Menu Design(Adobe InDesign)</span><span class="meta">A3 | 2024</span></div></div>
-            <div class="photo-item b-2"><img src="./01/art17.jpg"><div class="photo-info"><span class="title">DIGITAL UMAMI</span><span class="meta">Menu Design(Figma)</span><span class="meta">2024</span></div></div>
-            <div class="photo-item b-3"><img src="./01/art11.png"><div class="photo-info"><span class="title">UPKP</span><span class="meta">Logo Design(Adobe InDesign)</span><span class="meta">3.5 x 2 in｜2024</span></div></div>
+            <div class="photo-item b-1" style="cursor: pointer;" onclick="window.location.href='details/paper.html'"><img src="./01/paper.png"><div class="photo-info"><span class="title">UMAMI</span><span class="meta">Menu Design(Adobe InDesign)</span><span class="meta">A3 | 2024</span></div></div>
+            <div class="photo-item b-2" style="cursor: pointer;" onclick="window.location.href='details/logo.html'"><img src="./01/logo.jpg"><div class="photo-info"><span class="title">UPKP</span><span class="meta">Logo Design(Adobe InDesign)</span><span class="meta">3.5 x 2 in｜2024</span></div></div>
+            <div class="photo-item b-3" style="cursor: pointer;" onclick="window.location.href='details/phone.html'"><img src="./01/phone.png"><div class="photo-info"><span class="title">DIGITAL UMAMI</span><span class="meta">Menu Design(Figma)</span><span class="meta">2024</span></div></div>
         </div>
     </div>
 
     <div class="book-overlay" id="game-modal">
         <div class="modern-close-btn" onclick="closeAllModals()">✕</div>
         <div class="game-container">
-            <div class="photo-item g-1"><img src="./02/art16.jpg"><div class="photo-info"><span class="title">GAME 01</span><span class="meta">Unity | 2024</span></div></div>
-            <div class="photo-item g-2"><img src="./02/art22.jpg"><div class="photo-info"><span class="title">GAME 02</span><span class="meta">Twine | 2024</span></div></div>
-            <div class="photo-item g-3"><img src="./02/art9.jpg"><div class="photo-info"><span class="title">INSTALLATION</span><span class="meta">Arduino</span></div></div>
-            <div class="photo-item g-4"><img src="./02/art20.png"><div class="photo-info"><span class="title">PROTOTYPE</span><span class="meta">Figma</span></div></div>
-            <div class="photo-item g-5"><img src="./02/psp.png"><div class="photo-info"><span class="title">INTERACTIVE</span><span class="meta">TD | 2024</span></div></div>
+            <div class="photo-item g-1" style="cursor: pointer;" onclick="window.location.href='details/game.html'"><img src="./02/art16.jpg"><div class="photo-info"><span class="title">GAME 01</span><span class="meta">Unity | 2024</span></div></div>
+            <div class="photo-item g-2" style="cursor: pointer;" onclick="window.location.href='details/kitty.html'"><img src="./02/art22.jpg"><div class="photo-info"><span class="title">GAME 02</span><span class="meta">Twine | 2024</span></div></div>
+            <div class="photo-item g-3" style="cursor: pointer;" onclick="window.location.href='details/candy.html'"><img src="./02/art9.jpg"><div class="photo-info"><span class="title">INSTALLATION</span><span class="meta">Arduino</span></div></div>
+            <div class="photo-item g-4" style="cursor: pointer;" onclick="window.location.href='details/wheat.html'"><img src="./02/art20.png"><div class="photo-info"><span class="title">PROTOTYPE</span><span class="meta">Figma</span></div></div>
+            <div class="photo-item g-5" style="cursor: pointer;" onclick="window.location.href='details/paper.html'"><img src="./02/psp.png"><div class="photo-info"><span class="title">INTERACTIVE</span><span class="meta">TD | 2024</span></div></div>
         </div>
     </div>
 
@@ -314,16 +488,122 @@
     <div class="book-overlay" id="tv-modal">
         <div class="modern-close-btn" onclick="closeAllModals()">✕</div>
         <div class="tv-container">
-            <div class="photo-item t-1"><img src="./04/art12.jpg"><div class="photo-info"><span class="title">VIDEO PIECE 01</span><span class="meta">Premiere Pro | 2024</span></div></div>
+            <div class="photo-item t-1" style="cursor: pointer;" onclick="window.location.href='details/gingerbread.html'"><img src="./04/art12.jpg"><div class="photo-info"><span class="title">VIDEO PIECE 01</span><span class="meta">Premiere Pro | 2024</span></div></div>
             <div class="photo-item t-2"><img src="./04/Summer_Snowy.png"><div class="photo-info"><span class="title">3D MODEL</span><span class="meta">Blender | 2024</span></div></div>
             <div class="photo-item t-3"><img src="./04/ai-render-1762327978-Beautiful portrait of a cute pastel 3D render of a pink gift box tied to a floating balloon, soft lighting, kawaii toy aesthetic, cinematic composition . concept art portrait, intricate details, soft f-2-after-mce5t9r6.png"><div class="photo-info"><span class="title">STOP MOTION</span><span class="meta">Handmade</span></div></div>
-            <div class="photo-item t-4"><img src="./04/art19.jpg"><div class="photo-info"><span class="title">ANIMATION</span><span class="meta">After Effects</span></div></div>
+            <div class="photo-item t-4" style="cursor: pointer;" onclick="window.location.href='details/twenty.html'"><img src="./04/art19.jpg"><div class="photo-info"><span class="title">ANIMATION</span><span class="meta">After Effects</span></div></div>
         </div>
     </div>
+
+
     <script>
-        /* =========================================
-           1. 列表悬浮图片逻辑
-           ========================================= */
+        gsap.registerPlugin(ScrollTrigger);
+
+    /* =========================================
+        0. 导航栏交互逻辑
+    ========================================= */
+        const navbar = document.getElementById('navbar');
+
+        // 监听滚动，控制导航栏的外观（玻璃态）
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 平滑回顶部（点击 Logo）
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 平滑滚动到指定板块（点击 Work / About）
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                // 减去导航栏大概的高度，避免遮挡内容
+                const offset = 80;
+                const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                window.scrollTo({
+                    top: elementPosition - offset,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+    /* =========================================
+       1. 序章序列帧逻辑
+       ========================================= */
+        const canvas = document.getElementById("hand-canvas");
+        const ctx = canvas.getContext("2d");
+        const loading = document.getElementById("loading");
+
+        const folderName = "bg"; 
+        const frameCount = 192;  
+        const getImgUrl = index => `./${folderName}/frame_${index.toString().padStart(3, '0')}.png`;
+
+        const images = [];
+        const playhead = { frame: 0 };
+        let loadedCount = 0;
+
+        for (let i = 0; i < frameCount; i++) {
+            const img = new Image();
+            img.src = getImgUrl(i);
+            img.onload = () => {
+                loadedCount++;
+                loading.innerText = `正在加载序列帧: ${Math.floor((loadedCount / frameCount) * 100)}%`;
+                if (loadedCount === frameCount) initAnimation();
+            };
+            img.onerror = () => {
+                loadedCount++;
+                if (loadedCount === frameCount) initAnimation();
+            }
+            images.push(img);
+        }
+
+        function initAnimation() {
+            loading.style.display = "none";
+            if(images[0] && images[0].naturalWidth > 0) {
+                canvas.width = images[0].naturalWidth;
+                canvas.height = images[0].naturalHeight;
+            }
+            render();
+            gsap.to(playhead, {
+                frame: frameCount - 1,
+                snap: "frame",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".scroll-container",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 0.5 
+                },
+                onUpdate: render
+            });
+        }
+
+        function render() {
+            if (images[playhead.frame] && images[playhead.frame].complete) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(images[playhead.frame], 0, 0);
+            }
+        }
+
+    /* =========================================
+       2. 核心：背景颜色丝滑过渡逻辑
+       ========================================= */
+           ScrollTrigger.create({
+            trigger: ".intro-section",
+            start: "top center", 
+            onEnter: () => gsap.to("body", { backgroundColor: "#e3ebf2", duration: 1 }),
+            onLeaveBack: () => gsap.to("body", { backgroundColor: "#ffffff", duration: 1 })
+        });
+
+
+    /* =========================================
+       3. 正文：列表鼠标跟随预览图逻辑
+        ========================================= */
         const items = document.querySelectorAll('.collection-item');
         items.forEach(item => {
             const img = item.querySelector('.hover-image');
@@ -344,9 +624,9 @@
             }
         });
 
-        /* =========================================
-           2. 滚动渐入动画逻辑
-           ========================================= */
+    /* =========================================
+       4. 作品集滚动渐入动画逻辑
+       ========================================= */
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('is-visible');
@@ -356,9 +636,9 @@
 
         document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
 
-        /* =========================================
-           3. 书本弹窗交互逻辑
-           ========================================= */
+    /* =========================================
+       5. 书本弹窗交互逻辑
+       ========================================= */
         function openModal(id) {
             document.getElementById(id).classList.add('is-active');
             document.body.style.overflow = 'hidden'; // 防止背景滚动
@@ -376,6 +656,26 @@
 
         // ESC 键关闭
         document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeAllModals(); });
+
+    /* =========================================
+       6. 跨页面返回时，自动打开对应弹窗
+        ========================================= */
+        window.addEventListener('DOMContentLoaded', () => {
+            // 检查网址后面有没有带 #xxx
+            if(window.location.hash) {
+                // 把 # 去掉，拿到真实的 ID，比如 'book-modal'
+                const modalId = window.location.hash.substring(1); 
+                const targetModal = document.getElementById(modalId);
+                
+                // 如果找到了对应的弹窗，直接调用我们写好的打开函数
+                if(targetModal && targetModal.classList.contains('book-overlay')) {
+                    openModal(modalId);
+                    
+                    // 可选：为了视觉更完美，顺便把页面背景滚动到对应板块的位置
+                    if(modalId === 'book-modal') scrollToSection('work-section');
+                }
+            }
+        });
     </script>
 </body>
 </html>
