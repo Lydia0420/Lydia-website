@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork 12 - Gingerbread</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu&family=Schoolbell&display=swap');
+
+        body {
+            background-color: rgb(255, 255, 255);
+            color: rgb(90, 79, 79);
+            font-family: "Georgia", serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            z-index: 1000;
+            display: flex;
+        }
+
+        .back-btn {
+            font-size: 1.2rem;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            border-bottom: 2px solid rgb(0, 0, 0);
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .back-btn:hover {
+            opacity: 0.6;
+        }
+
+        /* work */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90%;
+            max-width: 1200px;
+            margin: 150px auto;
+        }
+
+        .text-content {
+            width: 40%;
+            text-align: left;
+        }
+
+        .title {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            font-family: 'Rubik Wet Paint', cursive;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.4;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            color: rgb(142, 140, 140);
+        }
+
+        .process-gallery {
+            width: 50%;
+            display: flex;
+            gap: 35px;
+            justify-content: center;
+        }
+
+        .process-image {
+            width: 45%;
+            max-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2); /* Add a shadow to the element */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .process-image:hover {
+            transform: scale(1.05);
+        }
+
+        .video-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        video {
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+            margin-bottom: 70px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 50px;
+                margin: 80px auto;
+            }
+            .text-content {
+                width: 90%;
+            }
+            .title {
+                font-size: 2.5rem;
+                text-align: center;
+            }
+            .description {
+                font-size: 1rem;
+                text-align: center;
+                margin-top: 40px;
+            }
+            .process-gallery {
+                flex-direction: column;
+                align-items: center;
+                width: 90%;
+            }
+            .process-image {
+                width: 80%;
+                max-width: 100%;
+            }
+            video {
+                width: 90%;
+                max-width: 500px;
+            }
+        }
+
+        .lang-toggle {
+          margin-left: 8px;   
+          margin-top: 4px;
+          align-self: center;            
+          border: 1px solid rgba(0,0,0,.1);
+          background: rgba(255,255,255,.4);
+          border-radius: 6px;
+          padding: 2px 8px;
+          font-size: 12px;
+          opacity: 0.7;
+          cursor: pointer;
+          transition: opacity 0.3s ease;
+          color: white;
+        }
+
+        .lang-toggle:hover {
+          opacity: 1;
+        }
+
+        @media (max-width:768px){
+          .lang-toggle { 
+            position:relative; 
+            z-index:10000; 
+          }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html#gallery" class="back-btn">← Back </a>
+
+        <div class="lang-right">
+            <button id="lang-toggle" class="lang-toggle" aria-label="toggle language">中文</button>
+        </div>
+    </nav>
+    
+    <section class="container">
+        <div class="text-content">
+            <h1 class="title" data-i18n="art12.Title">Stop-Motion</h1>
+            <p class="description" data-i18n="art12.description1">
+                A creative project illustrating the whimsical process of baking gingerbread cookies. 
+                Every element is handdrawn, cut out, and animated frame by frame.
+            </p>
+        </div>
+
+        <div class="process-gallery">
+            <img src="../images/gingerbread/process1.png" alt="Process 1" class="process-image">
+            <img src="../images/gingerbread/process2.png" alt="Process 2" class="process-image">
+        </div>
+    </section>
+
+    <section class="video-container">
+        <video controls poster="../images/gingerbread/art12.jpg">
+            <source src="../images/gingerbread/final.MOV" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+
+    <script>
+        document.querySelector(".back-btn").addEventListener("click", (e) => {
+          e.preventDefault();
+          window.location.href = "../index.html#tv-modal";
+        });
+    </script>
+
+    <script src="../i18n.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

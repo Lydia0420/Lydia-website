@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Twenty · Documentary</title>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Carrois+Gothic+SC&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gaegu&family=Schoolbell&display=swap');
+
+    :root {
+    --bg: #ffffff;          /* 纯白背景 */
+    --paper: #f8f9fa;       /* 卡片/播放器框的轻微灰底，拉开层次 */
+    --ink: #303237;         /* 主体文字（深灰黑，比纯黑更护眼、更高级） */
+    --muted: #5f6368;       /* 次级文字/说明文字（中度灰） */
+    --accent: #eb7c7c;      /* 强调色/标签色（亮眼且清晰的蓝色） */
+    --edge: rgba(0, 0, 0, 0.1); /* 边框与线条（浅灰半透明） */
+    }
+
+    html,body{background:var(--bg); color:var(--ink); margin:0;}
+
+    nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 10px 20px;
+        z-index: 1000;
+        display: flex;
+    }
+
+    .back-btn {
+        font-size: 1.2rem;
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+        border-bottom: 2px solid rgb(0, 0, 0);
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .back-btn:hover {
+        opacity: 0.6;
+    }
+
+    /* Work */
+    .hero{
+      max-width:1100px; 
+      margin:72px auto 28px; 
+      padding:0 24px; 
+      text-align:center;
+    }
+
+    .hero-quote{
+      font-family: 'Schoolbell', cursive;
+      font-weight: 400;
+      font-size: clamp(28px, 5vw, 56px);
+      line-height: 1.3;
+      margin: 0 0 12px;
+      letter-spacing: 0.5px;
+      margin-top: 100px;
+    }
+
+    .hero-sub{
+      color:var(--muted); 
+      max-width:1000px; 
+      margin:0 auto; 
+      line-height:1.7;
+      margin-top: 20px;
+    }
+
+    /* 主文档容器 */
+    .doc{ 
+        max-width:1100px; 
+        margin:0 auto 120px; 
+        padding:0 24px; 
+        margin-top: 50px;
+    }
+
+    /* Section Head */
+    .section-head{ 
+        margin:48px 0 14px; 
+    }
+    .section-head h2{
+      font-size:18px; 
+      letter-spacing:.22em; 
+      text-transform:uppercase; 
+      margin:0 0 6px; 
+      color:#bc4d4d;
+    }
+    .section-head p{ 
+        margin:0; 
+        color:var(--muted); 
+    }
+
+    /* Player 框：留白 + 细边 + 微阴影 */
+    .player-frame {
+    background: var(--paper); /* 使用上面定义的浅灰底 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* 阴影变淡 */
+    }
+
+    .rough-card:hover {
+    border-color: rgba(26, 115, 232, 0.4); /* 悬浮边框变成清爽的蓝色 */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08); /* 悬浮阴影变淡 */
+    }
+
+    .player{
+      width:100%; 
+      height:auto; 
+      display:block; 
+      border-radius:10px; 
+      outline:none;
+    }
+
+    /* Final Section */
+    .final .player-frame{ 
+        margin-top:14px; 
+    }
+    .final .note{ 
+        color:var(--muted); 
+        line-height:1.8; 
+        max-width:860px; 
+        margin:14px auto 0; 
+        text-align:center; }
+
+    /* Rough Cuts */
+    .roughs{ 
+        margin-top:100px; 
+    }
+    .rough-grid{
+      display:grid; 
+      gap:22px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .rough-card{
+      background: rgba(255,255,255,.02);
+      border:1px solid var(--edge);
+      border-radius:16px;
+      padding:16px;
+      transition: 
+        transform .25s ease, 
+        box-shadow .25s ease, 
+        border-color .25s ease;
+    }
+    .rough-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(138,180,248,.35);
+      box-shadow: 0 24px 46px rgba(0,0,0,.38);
+    }
+    .rough-meta{
+      display:flex; 
+      align-items:center; 
+      gap:10px; 
+      margin-bottom:10px;
+    }
+    .badge{
+      display:inline-block; 
+      font-size:12px; 
+      letter-spacing:.08em; 
+      text-transform:uppercase;
+      color:#0b1b34; 
+      background: var(--accent); 
+      padding:3px 8px; 
+      border-radius:999px; 
+      font-weight:700;
+    }
+    .rough-title{ 
+        margin:0; 
+        font-size:16px; 
+        color:#bcbdc0; 
+    }
+
+    .rough-desc{ 
+        color:var(--muted); 
+        line-height:1.7; 
+        margin:10px 2px 2px; 
+    }
+
+    /* Credits & CTA */
+    .credits{ 
+        text-align:center; 
+        margin-top:58px; 
+    }
+
+    .small{ 
+        color:#b7b8b8; 
+        opacity:.85; 
+        line-height:1.6; 
+    }
+
+    /* 响应式 */
+    @media (max-width: 860px){
+      .rough-grid{ grid-template-columns: 1fr; }
+    }
+
+    .lang-toggle {
+      margin-left: 8px;   
+      margin-top: 4px;
+      align-self: center;            
+      border: 1px solid rgba(0,0,0,.1);
+      background: rgba(255,255,255,.4);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 12px;
+      opacity: 0.7;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+      color: white;
+    }
+
+    .lang-toggle:hover {
+      opacity: 1;
+    }
+
+    @media (max-width:768px){
+      .lang-toggle { 
+        position:relative; 
+        z-index:10000; 
+      }
+    }
+  </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html#gallery" class="back-btn">← Back </a>
+
+        <div class="lang-right">
+            <button id="lang-toggle" class="lang-toggle" aria-label="toggle language">中文</button>
+        </div>
+    </nav>
+
+  <header class="hero">
+    <h1 class="hero-quote" data-i18n="art19.Title">Why am I so tired at twenty?</h1>
+    <p class="hero-sub" data-i18n="art19.subtitle">
+      The kind of burnout doesn’t come from overwork, but from the pressure to become someone better, faster, more likable, more seen. 
+      This film explores how productivity culture becomes internalized as selfblame and invisible pressure.
+    </p>
+  </header>
+
+  <main class="doc">
+        <section class="final">
+        <div class="section-head">
+            <h2 data-i18n="art19.finalTitle">Final Documentary</h2>
+        </div>
+
+        <div class="player-frame">
+            <video class="player" controls preload="metadata" aria-label="Final Documentary"
+                src="../images/twenty/Final Documentary.MOV">
+            Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <p class="note" data-i18n="art19.description1">
+            This short documentary explores how a generation raised on optimization, digital validation and endless comparison is 
+            experiencing emotional burnout and self doubt before life has even begun.  
+            Through personal reflections, visual metaphors and interviews with young people in their early twenties, 
+            the film examines how social structures like productivity culture have been internalized as self blame and invisible pressure. 
+            I want to understand how “not being enough” has become a shared cultural condition, especially for young adults coming of age in a hyper mediated world. 
+            Like <em>The Social Dilemma</em> and <em>La Jetée</em>, convey the inner landscape of a generation caught between idealized futures and the disenchanted now.
+        </p>
+        </section>
+
+        <section class="roughs">
+        <div class="section-head">
+            <h2 data-i18n="art19.roughTitle">Rough Cuts</h2>
+            <p data-i18n="art19.roughIntro">
+                Two explorations on rhythm and point of view before arriving at the final structure.
+            </p>
+        </div>
+
+        <div class="rough-grid">
+            <article class="rough-card">
+            <header class="rough-meta">
+                <span class="badge" data-i18n="art19.rough1.badge">Rough Cut 1</span>
+                <h3 class="rough-title" data-i18n="art19.rough1.title">Unedited Footage</h3>
+            </header>
+            <div class="player-frame sm">
+                <video class="player" controls preload="metadata" aria-label="Rough Cut 1"
+                    src="../images/twenty/Rough Cut_1.mp4"></video>
+            </div>
+            <p class="rough-desc" data-i18n="art19.rough1.desc">
+                This version was just raw clips put together — no interviews, no sound, no editing.
+            </p>
+            </article>
+
+            <article class="rough-card">
+            <header class="rough-meta">
+                <span class="badge" data-i18n="art19.rough2.badge">Rough Cut 2</span>
+                <h3 class="rough-title" data-i18n="art19.rough2.title">Voices Added</h3>
+            </header>
+            <div class="player-frame sm">
+                <video class="player" controls preload="metadata" aria-label="Rough Cut 2"
+                    src="../images/twenty/Rough Cut_2.mp4"></video>
+            </div>
+            <p class="rough-desc" data-i18n="art19.rough2.desc">
+               Added voiceover and interviews with partial editing, but the story narrative is still unclear.
+            </p>
+            </article>
+        </div>
+        </section>
+
+        <section class="credits">
+        <p class="small" data-i18n="art19.credits">
+            Influences: <em>The Social Dilemma</em>, <em>La Jetée</em>. <br>
+            Shot & edited by Lydia He · 2025 Summer
+        </p>
+        </section>
+
+        <script>
+            document.querySelector(".back-btn").addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.href = "../index.html#tv-modal";
+            });
+        </script>
+  </main>
+
+    <script src="../i18n.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

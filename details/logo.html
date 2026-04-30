@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artwork 17 - Logo</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Aldrich&display=swap");
+
+        body {
+            background-color: white;
+            color: black;
+            margin: 0;
+            font-family: "Georgia", serif;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            z-index: 1000;
+            text-align: left;
+            display: flex;
+        }
+
+        .back-btn {
+            font-size: 1.2rem;
+            color: black;
+            text-decoration: none;
+            border-bottom: 2px solid black;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .back-btn:hover {
+            opacity: 0.6;
+        }
+
+        /* work */
+        .logo-gallery {
+            text-align: center;
+            padding: 50px 30px 0px; 
+            max-width: 70vw;
+            margin: 0 auto;
+        }
+
+        .logo-gallery h1 {
+            font-family: 'Aldrich', sans-serif;
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 45px;
+            margin-top: 60px;
+        }
+
+        .logo-gallery h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .logo-gallery p {
+            font-size: 1rem;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+
+        /* draft 1 */
+        .logo-grid {
+            display: grid; /* Grid layout */
+            grid-template-columns: repeat(5, 1fr);  /* Used to define the number and width of columns in a Grid layout. */
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 55px;
+            align-items: center;
+        }
+
+        /* draft 1 & 2 IMG */
+        .logo-grid img {
+            width: 100%;
+            max-height: 140px;
+            object-fit: contain;  /* Fill the container in original proportions without cutting*/
+            object-position: center; /* control the alignment of pictures when there is white space in the object-fit. */
+            background-color: white; 
+            display: block;
+        }
+
+        .logo-grid img:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* 3.1 */
+        .logo-grid.three-columns {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .logo-grid.three-columns img{
+            width: 100%;
+            max-height: 190px;
+        }
+
+        /* 3.2 color */
+        .logo-grid.three-by-three {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 80vw;
+            margin: auto;
+            padding: 20px 0;
+        }
+
+        .logo-grid.three-by-three img {
+            width: 100%;
+            max-width: 60vw;
+            height: 150px;
+        }
+
+        /* 3.3 */
+        .logo-grid.two-by-four {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 80vw;
+            margin: auto;
+            padding: 20px 0;
+        }
+
+        .logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            justify-content: flex-start;
+            height: 100%;
+        }
+
+        .logo-item img {
+            width: 100%;
+            max-height: 180px; 
+            object-fit: contain;
+            background-color: white;
+            padding: 15px 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Add a shadow to the element */
+        }
+
+        .logo-item p {
+            font-size: 0.9rem;
+            margin-top: 8px;
+            color: #666;
+            max-width: 90%;
+        }
+
+
+        /* Final Logo */
+        .final-logo {
+            text-align: center;
+            margin-top: 100px;
+            margin-bottom: 180px; 
+            font-family: 'Bruno Ace', sans-serif;
+            font-size: 1.9rem;
+        }
+
+        .final-logo p {
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+            font-family: "Georgia", serif;
+        }
+
+        .final-logo-container {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 30px;
+            padding: 50px;
+        }
+
+        .business-card {
+            width: 360px; 
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* white card */
+        .business-card.light {
+            background: white;
+            box-shadow: -13px 15px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #ddd;
+        }
+
+        /* black card */
+        .business-card.dark {
+            background: black;
+            box-shadow: -13px 15px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .business-card:hover {
+            transform: scale(1.1);
+            box-shadow: -15px 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .business-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @media (max-width: 1024px) {
+            .logo-grid {
+                grid-template-columns: repeat(3, 1fr); 
+            }
+
+            .logo-grid img {
+                max-height: 160px;
+            }
+
+            .logo-grid.three-columns {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+                margin-top: 50px;
+            }
+            
+            .logo-grid.three-columns img{
+                width: 100%;
+                max-height: 500px;
+            }
+
+            .logo-grid.two-by-four {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .final-logo {
+                margin-bottom: 70px; 
+            }
+
+            .final-logo-container {
+                flex-direction: column; 
+                align-items: center;
+            }
+
+            .final-logo p {
+                max-width: 600px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-gallery {
+                max-width: 90vw; 
+                padding: 20px 20px 0px; 
+            }
+
+            .logo-grid {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+
+            .logo-grid p{
+                max-width: 350px;
+            }
+
+            .logo-grid img {
+                max-height: 200px;
+            }
+
+            .logo-grid.three-by-three img {
+                height: 90px;
+            }
+
+            .final-logo {
+                margin-bottom: 50px; 
+            }
+
+            .final-logo p {
+                max-width: 380px;
+            }
+
+            .business-card {
+                width: 330px; 
+                height: 190px;
+            }
+        }
+
+        .lang-toggle {
+          margin-left: 8px;   
+          margin-top: 4px;
+          align-self: center;            
+          border: 1px solid rgba(0,0,0,.1);
+          background: rgba(255,255,255,.4);
+          border-radius: 6px;
+          padding: 2px 8px;
+          font-size: 12px;
+          opacity: 0.7;
+          cursor: pointer;
+          transition: opacity 0.3s ease;
+          color: black;
+        }
+
+        .lang-toggle:hover {
+          opacity: 1;
+        }
+
+        @media (max-width:768px){
+          .lang-toggle { 
+            position:relative; 
+            z-index:10000; 
+          }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="../index.html#gallery" class="back-btn">← Back </a>
+        
+        <div class="lang-right">
+            <button id="lang-toggle" class="lang-toggle" aria-label="toggle language">中文</button>
+        </div>
+    </nav>
+
+    <section class="logo-gallery">
+        <h1 data-i18n="art17.Title">UPKP Logo Design</h1>
+        <h2 data-i18n="art17.firstTitle">First Draft</h2>
+        <p class="description" data-i18n="art17.description1">
+            This company specializes in medical device after-sales and repair services. 
+            As a supporter of the medical field, I chose the word upkeep, forming UPKP.
+        </p>
+    
+        <div class="logo-grid">
+            <img src="../images/logo/logo_draft1_01.jpg" alt="Logo Draft 1">
+            <img src="../images/logo/logo_draft1_02.jpg" alt="Logo Draft 2">
+            <img src="../images/logo/logo_draft1_03.jpg" alt="Logo Draft 3">
+            <img src="../images/logo/logo_draft1_04.jpg" alt="Logo Draft 4">
+            <img src="../images/logo/logo_draft1_05.jpg" alt="Logo Draft 5">
+            <img src="../images/logo/logo_draft1_06.jpg" alt="Logo Draft 6">
+            <img src="../images/logo/logo_draft1_07.jpg" alt="Logo Draft 7">
+            <img src="../images/logo/logo_draft1_08.png" alt="Logo Draft 8">
+            <img src="../images/logo/logo_draft1_09.jpg" alt="Logo Draft 9">
+            <img src="../images/logo/logo_draft1_10.jpg" alt="Logo Draft 10">
+            <img src="../images/logo/logo_draft1_11.png" alt="Logo Draft 11">
+            <img src="../images/logo/logo_draft1_12.jpg" alt="Logo Draft 12">
+            <img src="../images/logo/logo_draft1_13.png" alt="Logo Draft 13">
+            <img src="../images/logo/logo_draft1_14.png" alt="Logo Draft 14">
+            <img src="../images/logo/logo_draft1_15.png" alt="Logo Draft 15">
+        </div>
+    </section>
+
+    <section class="logo-gallery">
+        <h2 data-i18n="art17.secondTitle">Second Draft</h2>
+        <p class="description" data-i18n="art17.description2">
+            The second draft presents refined variations of the logo, incorporating design improvements based on feedback. 
+            These designs focus on clarity, symbolism, and brand identity.
+        </p>
+
+        <div class="logo-grid">
+            <img src="../images/logo/logo draft2-01.png" alt="Logo Draft 2-01">
+            <img src="../images/logo/logo draft2-02.png" alt="Logo Draft 2-02">
+            <img src="../images/logo/logo draft2-03.png" alt="Logo Draft 2-03">
+            <img src="../images/logo/logo draft2-04.png" alt="Logo Draft 2-04">
+            <img src="../images/logo/logo draft2-05.png" alt="Logo Draft 2-05">
+            <img src="../images/logo/logo draft2-06.png" alt="Logo Draft 2-06">
+            <img src="../images/logo/logo draft2-07.png" alt="Logo Draft 2-07">
+            <img src="../images/logo/logo draft2-08.png" alt="Logo Draft 2-08">
+            <img src="../images/logo/logo draft2-09.png" alt="Logo Draft 2-09">
+            <img src="../images/logo/logo draft2-10.png" alt="Logo Draft 2-10">
+            <img src="../images/logo/logo draft2-11.png" alt="Logo Draft 2-11">
+            <img src="../images/logo/logo draft2-12.png" alt="Logo Draft 2-12">
+            <img src="../images/logo/logo draft2-13.png" alt="Logo Draft 2-13">
+            <img src="../images/logo/logo draft2-14.png" alt="Logo Draft 2-14">
+            <img src="../images/logo/logo draft2-15.png" alt="Logo Draft 2-15">
+        </div>
+    </section>
+
+    <section class="logo-gallery">
+        <h2 data-i18n="art17.thirdTitle1">Third Draft (3.1 Version)</h2>
+        <p class="description" data-i18n="art17.description3">
+            Based on the final selection from the second draft, this version explores six refined iterations, 
+            testing visual balance, scalability, and symbol integration.
+        </p>
+
+        <div class="logo-grid three-columns">
+            <img src="../images/logo/01.png" alt="Final Logo 1">
+            <img src="../images/logo/02.png" alt="Final Logo 2">
+            <img src="../images/logo/03.png" alt="Final Logo 3">
+            <img src="../images/logo/04.png" alt="Final Logo 4">
+            <img src="../images/logo/05.png" alt="Final Logo 5">
+            <img src="../images/logo/06.png" alt="Final Logo 6">
+        </div>
+    </section>
+
+    <section class="logo-gallery">
+        <h2 data-i18n="art17.thirdTitle2">Third Draft (3.2 Color Variations)</h2>
+        <p class="description" data-i18n="art17.description4">
+            Color variations of the final logo concept. Some of these designs resemble the colors of the four seasons, 
+            potentially allowing for branding flexibility across different contexts.
+        </p>
+    
+        <div class="logo-grid three-by-three">
+            <img src="../images/logo/color1.png" alt="Color Variation 1">
+            <img src="../images/logo/color2.png" alt="Color Variation 2">
+            <img src="../images/logo/color3.png" alt="Color Variation 3">
+            <img src="../images/logo/color4.png" alt="Color Variation 4">
+            <img src="../images/logo/color5.png" alt="Color Variation 5">
+            <img src="../images/logo/color6.png" alt="Color Variation 6">
+            <img src="../images/logo/color7.png" alt="Color Variation 7">
+            <img src="../images/logo/color8.png" alt="Color Variation 8">
+            <img src="../images/logo/color9.png" alt="Color Variation 9">
+        </div>
+    </section>
+
+    <section class="logo-gallery">
+        <h2 data-i18n="art17.thirdTitle3">Third Draft (3.3 Refinement)</h2>
+        <p class="description" data-i18n="art17.description5">
+            Final refinements to the logo's proportions, spacing, and overall balance. 
+            Each variation is carefully adjusted to enhance clarity and branding consistency.
+        </p>
+
+        <div class="logo-grid two-by-four">
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 1.png" alt="Letter Version 1">
+                <p class="description" data-i18n="art17.step1">Adjusted letter spacing for better readability.</p>
+            </div>
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 2.png" alt="Letter Version 2">
+                <p class="description" data-i18n="art17.step2">Leaf icon slightly enlarged for emphasis.</p>
+            </div>
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 3.png" alt="Letter Version 3">
+                <p class="description" data-i18n="art17.step3">Refined alignment between text and icon.</p>
+            </div>
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 4.png" alt="Letter Version 4">
+                <p class="description" data-i18n="art17.step4">More contrast between text and logo.</p>
+            </div>
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 5.png" alt="Letter Version 5">
+                <p class="description" data-i18n="art17.step5">Logo icon isolated for standalone branding.</p>
+            </div>
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 6.png" alt="Letter Version 6">
+                <p class="description" data-i18n="art17.step6">Modified proportions for balance.</p>
+            </div>
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 7.png" alt="Letter Version 7">
+                <p class="description" data-i18n="art17.step7">Experimenting with stacked logo layout.</p>
+            </div>
+            <div class="logo-item">
+                <img src="../images/logo/Letter - 8.png" alt="Letter Version 8">
+                <p class="description" data-i18n="art17.step8">Optimized for small-scale applications.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-logo">
+        <h2 data-i18n="art17.finalTitle">Final Version</h2>
+        <p class="description" data-i18n="art17.description6">
+            The final UPKP logo is designed in two versions: a standard version and a reversed color version, 
+            ensuring adaptability in different branding applications.
+        </p>
+    
+        <div class="final-logo-container">
+            <div class="business-card light">
+                <img src="../images/logo/final1.jpg" alt="Final Logo - Standard">
+            </div>
+            <div class="business-card dark">
+                <img src="../images/logo/final2.jpg" alt="Final Logo - Reversed">
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.querySelector(".back-btn").addEventListener("click", (e) => {
+          e.preventDefault();
+          window.location.href = "../index.html#book-modal";
+        });
+    </script>
+
+    <script src="../i18n.js"></script>
+    <script src="../script.js"></script>
+</body>
+</html>

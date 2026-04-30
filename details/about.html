@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Miniver&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Emilys+Candy&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kalam&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Moulpali&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(255, 255, 255);
+            color: white;
+            font-family: 'Cormorant Garamond', serif;
+            cursor: url('../images/cursor/100.png') 16 16, auto;
+        }
+
+        a:hover,
+        button:hover,
+        .artwork:hover {
+          cursor: url('../images/cursor/hover.png'), auto;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            width: 100vw;
+            max-width: none;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 18px;        
+            font-weight: bold;
+            white-space: nowrap; 
+            margin-left: 0px; 
+        }
+
+        .logo a {
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 0px;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            display: block;
+            padding: 5px 0px 5px 20px;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.6;
+        }
+
+
+
+        /* dropdown menu */
+        nav .dropdown {
+            position: relative;
+        }
+
+        nav .dropdown-content {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          min-width: 200px;
+          background-color: rgb(223, 237, 248);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+          padding: 13px 0;
+          z-index: 999;
+          border-radius: 10px;
+        }
+
+        @media (min-width: 430px) {
+          nav .dropdown:hover .dropdown-content {
+            display: block;
+          }
+        }
+
+        nav .sub-dropdown {
+          margin-bottom: 10px;
+        }
+
+        nav .sub-artwork {
+          display: none;
+          padding-left: 20px;
+        }
+
+        .sub-dropdown.open .sub-artwork {
+          display: block;
+        }
+
+        nav .sub-header {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          width: 100%;
+        }
+
+        nav .sub-name {
+          background: none;
+          border: none;
+          color: black;
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 17px;
+          padding: 13px 20px;
+          cursor: pointer;
+          text-align: left;
+          width: auto;
+          flex-grow: 1;
+        }
+
+        nav .sub-header:hover {
+          background-color: #ffffff;
+          border-radius: 10px;
+        }
+
+
+        nav .sub-artwork a {
+          display: block;
+          padding: 0px 20px;
+          font-size: 15px;
+          color: rgb(71, 105, 123);
+          text-decoration: none;
+          font-family: 'Moulpali', sans-serif;
+        }
+
+        nav .sub-artwork a:hover {
+          background-color: #fdfdfd;
+          border-radius: 10px;
+        }
+
+        /* Default image hidden */
+        nav .decoration {
+          display: none;
+          width: 25px;
+          height: auto;
+          margin-left: 10px;
+          vertical-align: middle;
+          transition: opacity 0.3s ease;
+          margin-right: 10px;
+        }
+
+        nav .sub-dropdown.open .decoration {
+          display: inline-block;
+          opacity: 1;
+        }
+
+
+        /* When the nav enters timeline turns white */
+        nav.nav-light a,
+        nav.nav-light .sub-name,
+        nav.nav-light .sub-artwork a,
+        nav.nav-light .logo a {
+          color: rgba(138, 138, 138, 0.921) !important;
+        }
+
+        nav a,
+        nav .sub-name,
+        nav .sub-artwork a,
+        nav .logo a {
+          transition: color 0.5s ease;
+        }
+
+        nav.nav-light a:hover,
+        nav.nav-light .sub-artwork a:hover {
+          opacity: 0.8;
+        }
+
+
+
+
+
+        /* work */
+        .about-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 900px;
+            margin: 90px auto;
+            padding: 20px;
+            text-align: left;
+            gap: 50px;
+            padding-top: 80px; 
+        }
+
+        .text-section {
+            flex: 1;
+            z-index: 999;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-family: 'Emilys Candy', cursive;
+            color: #404b7a;
+        }
+
+        .text-section p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #4b4949;
+            max-width: 500px;
+        }
+
+        .polaroid {
+            background: rgb(226, 231, 235);
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2); /* Add a shadow to the element */
+            text-align: center;
+            width: 250px; 
+            height: 300px;
+            z-index: 999;
+            transition: transform 0.4s ease;
+            transform-origin: center center;
+        }
+
+        .polaroid:hover {
+          transform: scale(1.03) rotate(-1deg);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 10px solid rgb(241, 241, 241); 
+        }
+
+        .caption {
+            font-size: 1.1rem;
+            color: black;
+            margin-top: 10px;
+            font-family: 'Miniver', cursive;
+        }
+
+        /* Click icon initially hide */
+        .click-icon {
+          position: absolute;
+          width: 25px;
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          pointer-events: none;
+          z-index: 1000;
+        }
+
+        /* icon appear when the mouse approaches */
+        .polaroid:hover .click-icon {
+          opacity: 0.9;
+        }
+
+        .click-icon {
+          animation: hand-pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes hand-pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.3); }
+          100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px; 
+            }
+
+            .about-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .polaroid {
+                margin-top: 20px;
+            }
+        }
+
+
+        /* background */
+        .intro-section {
+          position: relative;
+          width: 100vw;
+          height: 100vh;
+          background: white;
+          overflow: hidden;
+        }
+
+        .white-cover {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: white;
+          z-index: 1;
+          display: none;
+        }
+
+        /* background video */
+        #timeline-video {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          object-fit: cover;
+          z-index: -1;
+          display: none;
+          filter: brightness(0.5);
+        }
+
+
+        /* white transition */
+        .gradient-transition {
+          width: 100vw;
+          height: 70vh;
+          background: linear-gradient(to bottom, 
+          white 0%, 
+          rgba(255,255,255,0.9) 20%, 
+          rgba(255,255,255,0.6) 50%, 
+          rgba(255,255,255,0.3) 70%, 
+          transparent 100%);
+          display: none;
+          z-index: 999;
+        }
+
+        /* timeline */
+        .timeline-section {
+          display: none;
+          z-index: 2;
+          position: relative;
+          padding-top: 80px;
+        }
+
+        .timeline-title {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            font-family: 'Emilys Candy', cursive;
+        }
+
+
+        .timeline-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        h3 {
+            font-family: 'Moulpali', sans-serif;
+            font-size: 1.7rem;
+        }
+          
+        .timeline-content p {
+            color: #c4c4c4;
+            font-size: 1.1rem;
+            max-width: 800px;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            color: white;
+        }
+          
+        .timeline-item.left .timeline-content {
+            order: 1;
+            text-align: right;
+          }
+          .timeline-item.left .timeline-image {
+            order: 2;
+          }
+          .timeline-item.right .timeline-content {
+            order: 2;
+            text-align: left;
+          }
+          .timeline-item.right .timeline-image {
+            order: 1;
+          }
+          
+          .timeline-content {
+            width: 45%;
+          }
+          
+        .timeline-image img {
+            width: 300px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        .timeline-image video {
+            width: 300px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+
+        .timeline-line {
+          position: absolute;
+          left: 50%;
+          top: 200px;
+          width: 4px;
+          height: calc(100% - 200px);
+          background-color: #333;
+          transform: translateX(-50%);
+          z-index: 1;
+        }
+
+        .timeline-line-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(to bottom, 
+            #f9d957 0%, 
+            #fbde6a 85%, 
+            #fcf8d4 95%);
+            box-shadow: 0 0 8px 3px rgba(255, 224, 102, 0.4); 
+            z-index: 2;
+            transition: height 0.3s ease;
+        }
+
+        .timeline-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #FFD700;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+          
+        .timeline-dot.active {
+            opacity: 1;
+            box-shadow: 0 0 10px yellow;
+            transform: translateX(-50%) scale(1.4);
+        }
+
+        .timeline-ending {
+            position: relative;
+            height: 3rem;
+            margin-top: 70px;
+            margin-bottom: 90px;
+        }
+          
+        .quote-left,
+        .quote-right {
+            position: absolute;
+            top: 0;
+            font-family: 'Moulpali', sans-serif;
+            font-style: italic;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.88);
+            white-space: nowrap;
+        }
+          
+          .quote-left {
+            right: 51%; 
+            text-align: right;
+            transform: translateX(-10px);
+        }
+          
+        .quote-right {
+            left: 51%;
+            text-align: left;
+            transform: translateX(10px);
+        }
+
+
+        .tap-hint {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          opacity: 0.8;
+          animation: hint-bounce 1.5s infinite;
+          pointer-events: none;
+          z-index: 10;
+        }
+
+        @keyframes hint-bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-6px);
+          }
+        }
+
+        @media (min-width: 769px) {
+          .tap-hint {
+            display: none;
+          }
+        }
+
+        @media (max-width: 768px) {  
+          .intro-section {
+            padding: 0px 0px;
+            margin-top: 0;
+            overflow: visible;
+          }
+
+          .about-container {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+            max-width: 768px;
+            width: 90%;
+            margin: 0 auto;
+            padding-top: 73px; 
+          }
+          
+          .text-section {
+            max-width: 500px;
+            text-align: left;
+          }
+          
+          .text-section h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+          }
+          
+          .text-section p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+          }
+        }
+
+        @media (max-width: 500px) {  
+
+        }
+
+        .lang-toggle {
+          border: 1px solid rgba(0,0,0,.1);
+          background: rgba(255,255,255,.4);
+          border-radius: 6px;
+          padding: 2px 8px;
+          font-size: 12px;
+          opacity: 0.7;
+          cursor: pointer;
+          transition: opacity 0.3s ease;
+        }
+
+        .lang-toggle:hover {
+          opacity: 1;
+        }
+
+
+        @media (max-width:768px){
+          .lang-toggle { 
+            position:relative; 
+            z-index:10000; 
+          }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <a href="../index.html#home-top" ...>Lydia's Portfolio</a>
+            <button id="lang-toggle" class="lang-toggle" aria-label="toggle language">中文</button>
+        </div>
+
+   
+
+        <ul class="nav-menu">
+          <li class="dropdown">
+            <a href="../index.html#gallery">Work</a>
+            <ul class="dropdown-content">
+
+              <li class="sub-dropdown">
+                <div class="sub-header">
+                  <button class="sub-name">Oil Painting</button>
+                  <img class="decoration" src="../images/cursor/icon.png" alt="decor" />
+                </div>
+                <ul class="sub-artwork">
+                  <li><a href="details/art2.html">More than a Rose</a></li>
+                  <li><a href="details/art6.html">EYE</a></li>
+                  <li><a href="details/art13.html">Moon Jellyfish</a></li>
+                  <li><a href="details/art15.html">Waterlilies Reimagined</a></li>
+                </ul>
+              </li>
+
+              <li class="sub-dropdown">
+                <div class="sub-header">
+                  <button class="sub-name">Printmaking</button>
+                  <img class="decoration" src="../images/cursor/icon.png" alt="decor" />
+                </div>
+                <ul class="sub-artwork">
+                  <li><a href="details/art8.html">HBD</a></li>
+                  <li><a href="details/art10.html">Chinese New Year</a></li>
+                  <li><a href="details/art14.html">Rabbit</a></li>
+                </ul>
+              </li>
+
+              <li class="sub-dropdown">
+                <div class="sub-header">
+                  <button class="sub-name">Digital</button>
+                  <img class="decoration" src="../images/cursor/icon.png" alt="decor" />
+                </div>
+                <ul class="sub-artwork">
+                  <li><a href="details/art9.html">Candy Game</a></li>
+                  <li><a href="details/art16.html">Guess the Character</a></li>
+                  <li><a href="details/art7.html">Umami</a></li>
+                  <li><a href="details/art11.html">Digital Umami</a></li>
+                  <li><a href="details/art17.html">UPKP</a></li>
+                </ul>
+              </li>
+
+              <li class="sub-dropdown">
+                <div class="sub-header">
+                  <button class="sub-name">Other Media</button>
+                  <img class="decoration" src="../images/cursor/icon.png" alt="decor" />
+                </div>
+                <ul class="sub-artwork">
+                  <li><a href="details/art1.html">Broken Egg</a></li>
+                  <li><a href="details/art4.html">Reflections on Water</a></li>
+                  <li><a href="details/art5.html">Verdant & Vivid</a></li>
+                  <li><a href="details/art3.html">First Dress</a></li>
+                  <li><a href="details/art12.html">Gingerbread Men</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../details/about.html">About</a></li>
+          <li><a href="../details/contact.html">Contact</a></li>
+      </ul>
+    </nav> 
+
+    <section class="intro-section">
+        <div class="about-container">
+            <div class="text-section">
+                <h1 data-i18n="about.Title">About Me</h1>
+                <p class="description" data-i18n="about.p1">
+                    Hey there!  I'm Lydia, an artist and designer with a love for both traditional and digital media.
+                    I started out with classical fine arts, but over time, I found myself drawn to digital design,
+                    interactive media, and generative art.  Somewhere along the way, I realized I enjoy blending
+                    these worlds and seeing what happens when creativity meets technology.
+                </p>
+                <p class="description" data-i18n="about.p2">
+                    My work is all about experimenting, exploring, and occasionally making a glorious mess
+                    before finding something magical.  I believe art isn't just about what you see, it's about
+                    what you feel, experience, and sometimes accidentally spill coffee on.
+                </p>
+                <p class="description" data-i18n="about.p3">
+                    Feel free to check out my work, and if you ever want to chat, collaborate, or just share ideas,
+                    I'd love to hear from you!
+                </p>
+            </div>
+
+            <div class="polaroid" id="photo-trigger">
+                <img src="../images/About/about.jpg" alt="Lydia's Polaroid">
+                <p class="caption" data-i18n="about.caption">Lydia</p>
+            </div>
+            <img class="click-icon" src="../images/About/click.png" alt="click icon">
+
+        </div>
+        <div class="white-cover" id="whiteCover"></div>
+    </section>
+
+
+    <div class="gradient-transition" id="gradientTransition"></div>
+
+    <video id="timeline-video" autoplay muted loop playsinline>
+        <source src="../images/About/bg.mp4" type="video/mp4" />
+    </video>
+
+    <section class="timeline-section" id="timelineSection">
+        <h2 class="timeline-title" data-i18n="about.timelineTitle">Where it all began</h2>
+        
+        <div class="timeline-container">
+
+            <div class="timeline-line">
+                <div class="timeline-line-fill"></div>
+            </div>
+
+
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-image">
+                    <img src="../images/About/1.jpg" alt="art1">
+                </div>
+                <div class="timeline-content">
+                    <h3 data-i18n="about.t1.date">May 2014</h3>
+                    <p class="description" data-i18n="about.t1.text">
+                        I officially started learning how to draw. 
+                        Charcoal, shading, proportions… everything felt new and a little intimidating, but exciting.
+                    </p>
+                </div>
+            </div>
+        
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-image">
+                    <img src="../images/About/2.jpg" alt="art2">
+                </div>
+                <div class="timeline-content">
+                    <h3 data-i18n="about.t2.date">Nov 2014</h3>
+                    <p class="description" data-i18n="about.t2.text">
+                        This year I met my Chinese painting teacher. 
+                        She introduced me to ink and brush, and its my first artwork at age 10.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-image">
+                    <img src="../images/About/3.jpg" alt="art3">
+                </div>
+                <div class="timeline-content">
+                    <h3 data-i18n="about.t3.date">Jul 2020</h3>
+                    <p class="description" data-i18n="about.t3.text">
+                        I started exploring oil painting with a new teacher who really inspired me. 
+                        It was my first time copying a full oil painting, it felt completely different from pencil and ink.
+                    </p>
+                </div>
+            </div>
+       
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-image">
+                    <video src="../images/About/4.mov" autoplay muted loop playsinline></video>
+                </div>
+                <div class="timeline-content">
+                    <h3 data-i18n="about.t4.date">Jan 2023</h3>
+                    <p class="description" data-i18n="about.t4.text">
+                        Cause of a TV series I accidentally fell in love with coding.
+                        Actually didn't really understand the logic back then, just thought it looked kind of magical.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-image">
+                    <img src="../images/About/5.jpg" alt="art5">
+                </div>
+                <div class="timeline-content">
+                    <h3 data-i18n="about.t5.date">Feb 2025</h3>
+                    <p class="description" data-i18n="about.t5.text">
+                        My first attempt at printmaking! 
+                        I took an elective course at university out of curiosity, 
+                        and ended up fascinated by how traditional techniques like etching could feel so physical and raw. 
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item right">
+                <div class="timeline-dot"></div>
+                <div class="timeline-image">
+                    <img src="../images/About/6.png" alt="art6">
+                </div>
+                <div class="timeline-content">
+                    <h3 data-i18n="about.t7.date">April 2026</h3>
+                    <p class="description" data-i18n="about.t5.text">
+                        Begin working with AI! 
+                        I took an elective course at university out of curiosity, 
+                        and ended up fascinated by how traditional techniques like etching could feel so physical and raw. 
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="timeline-image">
+                    <img src="../images/About/7.jpg" alt="art7">
+                </div>
+                <div class="timeline-content">
+                    <h3 data-i18n="about.t6.date">Now</h3>
+                    <p class="description" data-i18n="about.t6.text">
+                        In between classes and projects, you'll usually find me at a gallery or museum. 
+                        It's where I reset, reflect, and rediscover why I love art in the first place.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-ending">
+                <p class="quote-left" data-i18n="about.quoteLeft">✨The story continue…</p>
+                <p class="quote-right" data-i18n="about.quoteRight">and I'm still drawing the lines.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const trigger = document.getElementById("photo-trigger");
+        const whiteCover = document.getElementById("whiteCover");
+        const gradient = document.getElementById("gradientTransition");
+        const video = document.getElementById("timeline-video");
+        const timeline = document.getElementById("timelineSection");
+
+        trigger.addEventListener("click", () => {
+        if (window.innerWidth > 768) {
+            whiteCover.style.display = "block";
+            gradient.style.display = "block";
+            video.style.display = "block";
+            timeline.style.display = "block";
+            document.body.style.overflow = "auto";
+
+            setTimeout(() => {
+                gradient.scrollIntoView({ behavior: "smooth" });
+            }, 300);
+        } else {
+            return;
+        }
+    });
+
+
+        let lineStarted = false;
+        let nowCelebrated = false;
+
+        function startLineAnimation() {
+            if (lineStarted) return;
+            lineStarted = true;
+
+            gsap.to(".timeline-line-fill", {
+            height: () => {
+                const timeline = document.querySelector(".timeline-container");
+                return timeline.scrollHeight + "px";
+            },
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".timeline-container",
+                start: "top center",      // yellow line start
+                end: "bottom bottom",     // end
+                scrub: true,
+                onUpdate: () => {
+                const line = document.querySelector(".timeline-line-fill");
+                const lineRect = line.getBoundingClientRect();
+                const lineBottom = lineRect.top + lineRect.height;
+
+                document.querySelectorAll(".timeline-dot").forEach(dot => {
+                const dotRect = dot.getBoundingClientRect();
+                const dotY = dotRect.top + dotRect.height / 2;
+
+                if (lineBottom >= dotY) {
+                    dot.classList.add("active");
+
+                    const parentItem = dot.closest('.timeline-item');
+                    const content = parentItem?.querySelector('.timeline-content');
+                    const heading = content?.querySelector("h3")?.textContent.trim();
+
+                    if (heading === "Now" && !nowCelebrated) {
+                    nowCelebrated = true;
+
+                    // get dot position
+                    const centerX = dotRect.left + dotRect.width / 2;
+                    const centerY = dotRect.top + dotRect.height / 2;
+                    const xRatio = centerX / window.innerWidth;
+                    const yRatio = centerY / window.innerHeight;
+
+                    confetti({
+                        particleCount: 80,
+                        spread: 360,
+                        startVelocity: 30,
+                        origin: { x: xRatio, y: yRatio },
+                        ticks: 60,
+                        scalar: 0.9,
+                        colors: ['#FFD700', '#FF69B4', '#87CEFA', '#ffffff']
+                    });
+
+                    setTimeout(() => {
+                        confetti({
+                        particleCount: 40,
+                        spread: 360,
+                        startVelocity: 20,
+                        origin: { x: xRatio, y: yRatio },
+                        ticks: 50,
+                        scalar: 1
+                        });
+                    }, 300);
+                    }
+                } else {
+                    dot.classList.remove("active");
+                }
+                });
+            }
+            }
+        });
+        }
+
+        function updateDotsOnScroll() {
+            const line = document.querySelector(".timeline-line-fill");
+            const lineRect = line.getBoundingClientRect();
+            const lineBottom = lineRect.top + lineRect.height;
+
+            document.querySelectorAll(".timeline-dot").forEach(dot => {
+                const dotRect = dot.getBoundingClientRect();
+                const dotY = dotRect.top + dotRect.height / 2;
+
+                if (lineBottom >= dotY + 30) {
+                dot.classList.add("active");
+                } else {
+                dot.classList.remove("active");
+                }
+            });
+        }
+
+        // scroll trigger the yellow line
+        window.addEventListener("scroll", () => {
+            if (!lineStarted && window.scrollY > 10) {
+            startLineAnimation();
+            }
+            updateDotsOnScroll();
+        });
+
+        // dropdown menu（nav）
+        document.addEventListener("DOMContentLoaded", () => {
+            const nav = document.querySelector("nav");
+            const toggles = nav.querySelectorAll(".sub-name");
+
+            toggles.forEach((toggle) => {
+            toggle.addEventListener("click", (e) => {
+                e.preventDefault();
+                const parent = toggle.closest(".sub-dropdown");
+                parent.classList.toggle("open");
+            });
+            });
+        });
+        window.addEventListener("load", updateDotsOnScroll);
+
+
+        const nav = document.querySelector("nav");
+        const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+            nav.classList.add("nav-light"); // nav text turns white
+            } else {
+            nav.classList.remove("nav-light"); // Restore the black text
+            }
+        });
+        }, {
+        threshold: 0.2
+        });
+
+        timelineObserver.observe(document.getElementById("timelineSection"));
+            
+    
+
+        const polaroid = document.getElementById('photo-trigger');
+        const clickIcon = document.querySelector('.click-icon');
+
+        // Locate the icon image to the Polaroid
+        function positionClickIcon() {
+        const rect = polaroid.getBoundingClientRect();
+
+        const iconX = rect.right - 30; 
+        const iconY = rect.bottom - 35;
+
+        clickIcon.style.left = `${iconX}px`;
+        clickIcon.style.top = `${iconY}px`;
+        }
+
+        // update pages
+        window.addEventListener('resize', positionClickIcon);
+        window.addEventListener('load', positionClickIcon);
+
+        // hover 
+        polaroid.addEventListener('mouseenter', () => {
+        positionClickIcon(); 
+        clickIcon.style.opacity = '1';
+        });
+
+        polaroid.addEventListener('mouseleave', () => {
+        clickIcon.style.opacity = '0';
+        });
+
+
+        const ending = document.querySelector('.timeline-ending');
+
+        const endingObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+            ending.classList.add('visible');
+            }
+        });
+        }, { threshold: 0.6 });
+
+        endingObserver.observe(ending);
+
+
+    </script>
+
+  <script src="../i18n.js"></script>
+  <script src="../script.js"></script>
+
+</body>
+</html>
