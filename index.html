@@ -672,25 +672,383 @@
     /* =========================================
         6. 【板块 03】iMac 容器 & 5个作品坐标
         ========================================= */
-        .imac-container {
-            position: relative; width: 80vw; max-width: 850px; aspect-ratio: 1.2 / 1; /* iMac 比较方正 */
-            background: url('./03/imac.png') no-repeat center / contain;
-            transform: scale(0.9) translateY(30px); transition: transform 0.6s ease;
-        }
-        .book-overlay.is-active .imac-container { transform: scale(1) translateY(0); }
+/* =========================================
+   6. 【板块 03】iMac / Desktop Workspace
+========================================= */
 
-        .m-1 { top: 10%; left: 10%; transform: rotate(-5deg); }
-        .m-2 { top: 10%; right: 9%; transform: rotate(3deg); }
-        .m-3 { bottom: 40%; right: 9%; transform: rotate(-3deg); }
-        .m-4 { bottom: 37%; left: 12%; transform: rotate(4deg); }
-        .m-5 { bottom: 45%; left: 40%; transform: rotate(-2deg); }
+.imac-container {
+    position: relative;
+    width: 80vw;
+    max-width: 850px;
+    aspect-ratio: 1.2 / 1;
+    background: url('./03/imac.png') no-repeat center / contain;
+    transform: scale(0.9) translateY(30px);
+    transition: transform 0.6s ease;
+}
 
-        .book-overlay.is-active .m-1 { opacity: 1; transition-delay: 0.1s; }
-        .book-overlay.is-active .m-2 { opacity: 1; transition-delay: 0.1s; }
-        .book-overlay.is-active .m-3 { opacity: 1; transition-delay: 0.2s; }
-        .book-overlay.is-active .m-4 { opacity: 1; transition-delay: 0.2s; }
-        .book-overlay.is-active .m-5 { opacity: 1; transition-delay: 0.3s; }
+.book-overlay.is-active .imac-container {
+    transform: scale(1) translateY(0);
+}
 
+
+/* ---------- iMac Screen Workspace ---------- */
+
+.imac-workspace {
+    position: absolute;
+
+    /* 这里控制整个“桌面区域”在 iMac 屏幕里的位置 */
+    top: 5%;
+    left: 3.5%;
+    width: 92.5%;
+    height: 63.5%;
+
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 2px;
+
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+
+    /* 很淡的 desktop 质感 */
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(255,255,255,0.20),
+            rgba(255,255,255,0) 65%
+        );
+}
+
+
+/* ---------- 顶部 Menu Bar ---------- */
+
+.imac-menu-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 10px;
+    box-sizing: border-box;
+
+    border-bottom: 1px solid rgba(40, 52, 60, 0.10);
+    background: rgba(238, 245, 249, 0.42);
+    backdrop-filter: blur(8px);
+
+    font-size: 0.45rem;
+    letter-spacing: 0.08em;
+    color: rgba(35, 45, 52, 0.58);
+    text-transform: none;
+
+    z-index: 20;
+}
+
+.imac-menu-left,
+.imac-menu-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.imac-menu-name {
+    font-weight: 600;
+    color: rgba(35, 45, 52, 0.78);
+}
+
+
+/* ---------- 文件路径 ---------- */
+
+.imac-path {
+    position: absolute;
+    top: 39px;
+    left: 18px;
+
+    font-family: 'Courier New', monospace;
+    font-size: 0.52rem;
+    letter-spacing: 0.05em;
+    color: rgba(44, 55, 62, 0.40);
+
+    z-index: 5;
+}
+
+/* ---------- Desktop Files ---------- */
+
+.imac-desktop-files {
+    position: absolute;
+
+    top: 8%;
+    right: 1.5%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    z-index: 4;
+}
+
+.imac-desktop-file {
+    width: 52px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+    cursor: default;
+
+    transition:
+        transform 0.18s ease,
+        opacity 0.18s ease;
+}
+
+.imac-desktop-file img {
+    width: 44px;
+    height: auto;
+    display: block;
+
+    margin-bottom: 3px;
+
+    opacity: 0.88;
+}
+
+.imac-desktop-file span {
+    font-size: 0.38rem;
+    line-height: 1.15;
+
+    letter-spacing: 0.025em;
+
+    color: rgba(35, 45, 52, 0.62);
+
+    text-shadow:
+        0 1px 2px rgba(255,255,255,0.65);
+}
+
+
+/* 很轻的桌面 hover */
+.imac-desktop-file:hover {
+    transform: translateY(-2px);
+}
+
+.imac-desktop-file:hover img {
+    opacity: 1;
+}
+
+
+/* ---------- 两个 Project Window ---------- */
+
+.imac-project {
+    position: absolute;
+
+    background: rgba(230, 238, 243, 0.96);
+    border: 1px solid rgba(25, 35, 42, 0.12);
+    border-radius: 5px;
+
+    box-shadow:
+        0 12px 30px rgba(35, 45, 55, 0.13),
+        0 2px 7px rgba(35, 45, 55, 0.08);
+
+    overflow: hidden;
+    cursor: pointer;
+
+    opacity: 0;
+
+    transition:
+        transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 0.24s ease,
+        opacity 0.3s ease;
+
+    z-index: 6;
+}
+
+
+/* 左边作为主窗口，略大 */
+.imac-project-1 {
+    width: 35%;
+    height: 74%;
+
+    left: 15%;
+    top: 17%;
+
+    transform: rotate(-1.2deg);
+}
+
+
+/* 右边略高、略小 */
+.imac-project-2 {
+    width: 33%;
+    height: 71%;
+
+    right: 14%;
+    top: 12%;
+
+    transform: rotate(1.1deg);
+}
+
+
+.book-overlay.is-active .imac-project-1 {
+    opacity: 1;
+    transition-delay: 0.12s;
+}
+
+.book-overlay.is-active .imac-project-2 {
+    opacity: 1;
+    transition-delay: 0.22s;
+}
+
+
+/* ---------- Window 顶栏 ---------- */
+
+.imac-window-bar {
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 9px;
+    box-sizing: border-box;
+    background: rgba(227, 234, 239, 0.96);
+
+    /* background: rgba(231, 235, 237, 0.96); */
+    border-bottom: 1px solid rgba(20, 30, 35, 0.09);
+}
+
+
+/* 三个 Mac 小圆点 */
+.imac-window-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.imac-window-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.imac-window-dots span:nth-child(1) {
+    background: #ff5f57;
+}
+
+.imac-window-dots span:nth-child(2) {
+    background: #febc2e;
+}
+
+.imac-window-dots span:nth-child(3) {
+    background: #28c840;
+}
+
+
+/* 窗口文件名 */
+.imac-window-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-family: 'Courier New', monospace;
+    font-size: 0.46rem;
+    letter-spacing: 0.06em;
+    color: rgba(40, 48, 53, 0.55);
+    white-space: nowrap;
+}
+
+.imac-window-open {
+    font-size: 0.62rem;
+    color: rgba(45, 55, 62, 0.44);
+}
+
+
+/* ---------- Project 内容 ---------- */
+
+.imac-project-content {
+    height: calc(100% - 27px);
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* 竖版 3:4 图片 */
+.imac-project-image {
+    width: 100%;
+    min-height: 0;
+    flex: 1;
+
+    object-fit: contain;
+    object-position: center;
+
+    display: block;
+    background: #e5eff8;
+}
+
+
+/* 底部项目文字 */
+.imac-project-meta {
+    padding: 6px 11px 9px;
+    background: #e5edf3;
+    border-top: 1px solid rgba(40, 45, 48, 0.06);
+}
+
+.imac-project-name {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: rgba(35, 39, 42, 0.82);
+    line-height: 1.0;
+    margin-bottom: 6px;
+}
+
+.imac-project-type {
+    font-size: 0.40rem;
+    font-weight: 400;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(55, 61, 65, 0.48);
+}
+
+/* ---------- Hover ---------- */
+
+.imac-project:hover {
+    transform: translateY(-6px) rotate(0deg) scale(1.025);
+    box-shadow:
+        0 18px 40px rgba(35, 45, 55, 0.18),
+        0 3px 9px rgba(35, 45, 55, 0.10);
+
+    z-index: 15;
+}
+
+.imac-workspace:has(.imac-project:hover)
+.imac-project:not(:hover) {
+    opacity: 0.58;
+    transform: scale(0.985);
+}
+
+
+/* ---------- Desktop Footer ---------- */
+
+.imac-desktop-footer {
+    position: absolute;
+    bottom: 10px;
+    left: 18px;
+    right: 18px;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-family: 'Courier New', monospace;
+    font-size: 0.45rem;
+    letter-spacing: 0.06em;
+
+    color: rgba(42, 52, 58, 0.35);
+
+    pointer-events: none;
+}
 
     /* =========================================
         6. 【板块 04】老电视容器 & VHS/CRT TV Layout
@@ -1551,11 +1909,156 @@
         </div>
         <div class="modern-close-btn" onclick="closeAllModals()">✕</div>
         <div class="imac-container">
-            <div class="photo-item m-1"><img src="./03/art19.jpg"><div class="photo-info"><span class="title">PROJECT 01</span><span class="meta">Installation | 2024</span></div></div>
-            <div class="photo-item m-2"><img src="./03/art19_副本.jpg"><div class="photo-info"><span class="title">PROJECT 02</span><span class="meta">Coding</span></div></div>
-            <div class="photo-item m-3"><img src="./03/art19_副本2.jpg"><div class="photo-info"><span class="title">PROJECT 03</span><span class="meta">Digital Art</span></div></div>
-            <div class="photo-item m-4"><img src="./03/art21.png"><div class="photo-info"><span class="title">PROJECT 04</span><span class="meta">Interactive</span></div></div>
-            <div class="photo-item m-5"><img src="./03/art23.png"><div class="photo-info"><span class="title">PROJECT 05</span><span class="meta">New Media</span></div></div>
+
+            <div class="imac-workspace">
+        
+                <!-- macOS style top bar -->
+                <div class="imac-menu-bar">
+        
+                    <div class="imac-menu-left">
+                        <span class="imac-menu-name">●</span>
+                        <span class="imac-menu-name">Finder</span>
+                        <span>File</span>
+                        <span>Edit</span>
+                        <span>View</span>
+                        <span>Go</span>
+                        <span>Window</span>
+                    </div>
+        
+                    <div class="imac-menu-right">
+                        <span class="imac-wifi">⌁</span>
+                        <span class="imac-icon">⌕</span>
+                        <span class="imac-date">Sep 10 Thu</span>
+                        <span class="imac-time">10:42 PM</span>
+                    </div>
+        
+                </div>
+        
+                 <!-- Desktop folders -->
+                <div class="imac-desktop-files">
+
+                    <div class="imac-desktop-file folder-1">
+                        <img src="./03/folder.png" alt="Process Folder">
+                        <span>PROCESS</span>
+                    </div>
+
+                    <div class="imac-desktop-file folder-2">
+                        <img src="./03/folder.png" alt="Archive Folder">
+                        <span>IMAGES</span>
+                    </div>
+
+                    <div class="imac-desktop-file folder-3">
+                        <img src="./03/folder.png" alt="Sketches Folder">
+                        <span>SKETCHES</span>
+                    </div>
+
+                    <div class="imac-desktop-file folder-4">
+                        <img src="./03/folder.png" alt="Sketches Folder">
+                        <span>VIDEO</span>
+                    </div>
+                </div>
+        
+                <!-- Project 01 -->
+                <div
+                    class="imac-project imac-project-1"
+                    onclick="window.location.href='details/project01.html'"
+                >
+        
+                    <div class="imac-window-bar">
+        
+                        <div class="imac-window-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+        
+                        <span class="imac-window-title">
+                            01_PROJECT
+                        </span>
+        
+                        <span class="imac-window-open">
+                            ↗
+                        </span>
+        
+                    </div>
+        
+        
+                    <div class="imac-project-content">
+        
+                        <img
+                            class="imac-project-image"
+                            src="./03/art31.jpg"
+                            alt="Project 01"
+                        >
+        
+                        <div class="imac-project-meta">
+        
+                            <span class="imac-project-name">
+                                PROJECT NAME
+                            </span>
+        
+                            <span class="imac-project-type">
+                                ARDUINO + P5.JS · 2025
+                            </span>
+        
+                        </div>
+        
+                    </div>
+        
+                </div>
+        
+        
+                <!-- Project 02 -->
+                <div
+                    class="imac-project imac-project-2"
+                    onclick="window.location.href='details/project02.html'"
+                >
+        
+                    <div class="imac-window-bar">
+        
+                        <div class="imac-window-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+        
+                        <span class="imac-window-title">
+                            02_PROJECT
+                        </span>
+        
+                        <span class="imac-window-open">
+                            ↗
+                        </span>
+        
+                    </div>
+        
+        
+                    <div class="imac-project-content">
+        
+                        <img
+                            class="imac-project-image"
+                            src="./03/art23.png"
+                            alt="Project 02"
+                        >
+        
+                        <div class="imac-project-meta">
+        
+                            <span class="imac-project-name">
+                                Emotion Recipe
+                            </span>
+        
+                            <span class="imac-project-type">
+                                Blender + Twine + Adobe · 2026
+                            </span>
+        
+                        </div>
+        
+                    </div>
+        
+                </div>
+        
+            </div>
+        
         </div>
     </div>
 
@@ -1582,16 +2085,16 @@
                     <img src="./04/art12.jpg">
                     <div class="photo-info"><span class="title">STOP MOTION</span><span class="meta">Handmade | 2024</span></div>
                 </div>
-                <div class="photo-item t-2">
+                <a class="photo-item t-2" href="details/snowy.html" aria-label="View Snowy" style="color: inherit; text-decoration: none;">
                     <span class="tv-channel-number">CH 02</span>
                     <img src="./04/Summer_Snowy.png">
                     <div class="photo-info"><span class="title">3D MODEL</span><span class="meta">Blender | 2025</span></div>
-                </div>
-                <div class="photo-item t-3">
+                </a>
+                <a class="photo-item t-3" href="details/candy-box.html" aria-label="View Candy Box" style="color: inherit; text-decoration: none;">
                     <span class="tv-channel-number">CH 04</span>
                     <img src="./04/ai-render-1762327978-Beautiful portrait of a cute pastel 3D render of a pink gift box tied to a floating balloon, soft lighting, kawaii toy aesthetic, cinematic composition . concept art portrait, intricate details, soft f-2-after-mce5t9r6.png">
                     <div class="photo-info"><span class="title">3D MODEL</span><span class="meta">Blender | 2025</span></div>
-                </div>
+                </a>
                 <div class="photo-item t-4" style="cursor: pointer;" onclick="window.location.href='details/twenty.html'">
                     <span class="tv-channel-number">CH 03</span>
                     <img src="./04/art19.jpg">
