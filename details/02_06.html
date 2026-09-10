@@ -54,36 +54,32 @@
 
     align-items: center;
 
-    background:
-      rgba(248,242,244,.72);
+    background: transparent;
 
-    backdrop-filter:
-      blur(10px);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 
-    -webkit-backdrop-filter:
-      blur(10px);
-
-    border-bottom:
-      1px solid rgba(27,24,24,.06);
-
+    border-bottom: none;
     z-index: 1000;
   }
 
 
   .sketch-nav a {
-    color: var(--ink);
-
     text-decoration: none;
   }
-
 
   .sketch-back {
     justify-self: start;
 
     font-size: 1.02rem;
 
+    color: #f8f2f4;
+
     border-bottom:
-      1.5px solid var(--ink);
+      1.5px solid currentColor;
+
+    text-shadow:
+      0 1px 8px rgba(0,0,0,.22);
 
     transition:
       opacity .25s ease;
@@ -137,16 +133,11 @@
   .sketch-info-top {
     position: fixed;
 
-    top: 88px;
-    right: 28px;
-
-    width:
-      min(330px, 28vw);
-
+    top: 78px;
+    right: 54px;
+    width: min(380px, 31vw);
     text-align: right;
-
     z-index: 30;
-
     pointer-events: none;
   }
 
@@ -154,7 +145,7 @@
   .sketch-kicker {
     margin-bottom: 10px;
 
-    font-size: .68rem;
+    font-size: .88rem;
 
     letter-spacing: .15em;
 
@@ -167,14 +158,8 @@
   .sketch-title {
     margin: 0;
 
-    font-size:
-      clamp(
-        1.7rem,
-        2.9vw,
-        3rem
-      );
-
-    line-height: .98;
+    font-size: clamp(2.6rem, 4.2vw, 4.8rem);
+    line-height: .95;
 
     letter-spacing: -.03em;
   }
@@ -187,8 +172,8 @@
   .sketch-info-bottom {
     position: fixed;
 
-    left: 28px;
-    bottom: 24px;
+    left: 42px;
+    bottom: 36px;
 
     width:
       min(390px, 31vw);
@@ -202,7 +187,7 @@
   .sketch-note-label {
     margin-bottom: 9px;
 
-    font-size: .62rem;
+    font-size: .86rem;
 
     letter-spacing: .14em;
 
@@ -217,9 +202,9 @@
 
     color: #675e61;
 
-    font-size: .9rem;
+    font-size: 1.2rem;
 
-    line-height: 1.5;
+    line-height: 1.58;
   }
 
   .stage {
@@ -328,7 +313,7 @@
   
   
     <div class="sketch-count">
-      07 STUDIES
+      NYU / IDM
     </div>
   
   </nav>
@@ -337,29 +322,26 @@
   <div class="sketch-info-top">
   
     <div class="sketch-kicker">
-      06 / Creative Coding Studies
+      06 / Creative Coding 
     </div>
   
     <h1 class="sketch-title">
       Playable<br>
-      Systems.
+      Sketches.
     </h1>
   
   </div>
   
   
   <div class="sketch-info-bottom">
-  
     <div class="sketch-note-label">
-      About this collection
+      WHAT’S INSIDE
     </div>
   
     <p>
-      Seven small p5.js experiments exploring motion,
-      interaction, generative form, rhythm, and visual systems.
-      Click a sketch to enter.
+      Motion · Generative Form<br>
+      Physics · Sound · Interaction
     </p>
-  
   </div>
   
   
@@ -367,11 +349,11 @@
 
     <a
       class="card"
-      href="./sketch-01.html"
+      href="../sketches/generative-patterns/index.html"
       aria-label="Open sketch 01"
     >
       <img
-        src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=85"
+        src="../images/02_06/cover-01.png"
         alt=""
       >
     </a>
@@ -379,11 +361,11 @@
   
     <a
       class="card"
-      href="./sketch-02.html"
+      href="../sketches/natural-phenomena/index.html"
       aria-label="Open sketch 02"
     >
       <img
-        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=85"
+        src="../images/02_06/cover-02.png"
         alt=""
       >
     </a>
@@ -391,11 +373,11 @@
   
     <a
       class="card"
-      href="./sketch-03.html"
+      href="../sketches/smart-creatures/index.html"
       aria-label="Open sketch 03"
     >
       <img
-        src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=900&q=85"
+        src="../images/02_06/cover-03.png"
         alt=""
       >
     </a>
@@ -403,11 +385,11 @@
   
     <a
       class="card"
-      href="./sketch-04.html"
+      href="../sketches/infinite-patterns/index.html"
       aria-label="Open sketch 04"
     >
       <img
-        src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=85"
+        src="../images/02_06/cover-04.png"
         alt=""
       >
     </a>
@@ -415,11 +397,11 @@
   
     <a
       class="card"
-      href="./sketch-05.html"
+      href="../sketches/spring-structure/index.html"
       aria-label="Open sketch 05"
     >
       <img
-        src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=85"
+        src="../images/02_06/cover-05.png"
         alt=""
       >
     </a>
@@ -427,11 +409,11 @@
   
     <a
       class="card"
-      href="./sketch-06.html"
+      href="../sketches/additive-waves/index.html"
       aria-label="Open sketch 06"
     >
       <img
-        src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=85"
+        src="../images/02_06/cover-06.png"
         alt=""
       >
     </a>
@@ -439,11 +421,11 @@
   
     <a
       class="card"
-      href="./sketch-07.html"
+      href="../sketches/dynamic-objects/index.html"
       aria-label="Open sketch 07"
     >
       <img
-        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=85"
+        src="../images/02_06/cover-07.png"
         alt=""
       >
     </a>
@@ -453,6 +435,9 @@
 <script>
 const cards = [...document.querySelectorAll('.card')];
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const skipIntro =
+  new URLSearchParams(window.location.search).get('state') === 'fan';
 
 const EASE_SPREAD = 'cubic-bezier(.22,.72,.24,1)';
 const EASE_STACK  = 'cubic-bezier(.62,0,.28,1)';
@@ -650,25 +635,31 @@ async function run() {
   const stack = exactStackPoses();
   const fan   = finalFanPoses();
 
+  // 从作品内页返回：直接显示最终展开状态
+  if (skipIntro) {
+    cards.forEach((card, i) => setPose(card, fan[i]));
+    setupHover(fan);
+    return;
+  }
+
+  // 正常进入 Sketchbook：播放完整动画
   cards.forEach((card, i) => setPose(card, start[i]));
   await sleep(180);
 
-  // 一条连续轨迹：第一张向左，后面的图从它身后跟出来，
-  // 随后逐渐追上，最终全部压到第一张背后。
-  await Promise.all(cards.map((card, i) => animateTrainCard(card, i)));
+  await Promise.all(cards.map((card, i) =>
+    animateTrainCard(card, i)
+  ));
 
-  // 确保结束时是绝对重合状态，第一张仍然在最上面。
   cards.forEach((card, i) => setPose(card, stack[i]));
   await sleep(260);
 
-  // 后半段保持上一版：六张同时沿左上—右下展开，
-  // 同时从正视角过渡到相同角度的轻微旋转。
   await Promise.all(cards.map((card, i) =>
     animatePose(card, stack[i], fan[i], 980, EASE_FAN, 0)
   ));
 
   setupHover(fan);
 }
+
 run();
 </script>
 </body>
